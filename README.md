@@ -6,7 +6,7 @@
 
 | 스킬 | 용도 |
 | --- | --- |
-| [algorithm-flowchart](skills/algorithm-flowchart/SKILL.md) | 알고리즘을 Mermaid 순서도로 설명하고 상대 처리시간을 저(초록)·중(노랑)·고(빨강)로 표시합니다. 기본 예시와 패치 제작 예시를 포함합니다. |
+| [algorithm-flowchart](skills/algorithm-flowchart/SKILL.md) | 알고리즘을 Mermaid 순서도로 설명하고 저·중·고 색상을 표시합니다. 측정 요청 시 실제 실행시간도 표시하며, 일반·패치 제작·병렬 측정 예시를 포함합니다. |
 | [package-dev-release](skills/package-dev-release/SKILL.md) | PackageDev와 자체 패키지의 의존 버전, 변경 이력, 커밋·푸시 및 지정 프로젝트 적용을 처리합니다. |
 | [class-diagram](skills/class-diagram/SKILL.md) | 실제 코드나 합의된 설계의 클래스·인터페이스 관계를 Mermaid 클래스 다이어그램으로 설명합니다. |
 | [text-tree](skills/text-tree/SKILL.md) | Unity 오브젝트·컴포넌트, 폴더·파일 및 일반 계층 정보를 텍스트 트리로 설명합니다. |
@@ -35,6 +35,7 @@ Get-ChildItem -LiteralPath './skills' -Directory | ForEach-Object {
 | 요청 예시 | 스킬 |
 | --- | --- |
 | “이 함수 순서도 보여줘” | `algorithm-flowchart` |
+| “측정 포함 순서도 보여줘” / “이전 측정 결과로 순서도 보여줘” | `algorithm-flowchart` |
 | “Foundation 커밋·푸시하고 지정 프로젝트에 적용해줘” | `package-dev-release` |
 | “이 클래스들의 관계를 구조도로 보여줘” | `class-diagram` |
 | “플레이어 하이어라키를 텍스트 트리로 보여줘” / “폴더 구조 보여줘” | `text-tree` |
