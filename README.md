@@ -10,8 +10,11 @@
 | [package-dev-release](skills/package-dev-release/SKILL.md) | PackageDev와 자체 패키지의 의존 버전, 변경 이력, 커밋·푸시 및 지정 프로젝트 적용을 처리합니다. |
 | [class-diagram](skills/class-diagram/SKILL.md) | 실제 코드나 합의된 설계의 클래스·인터페이스 관계를 Mermaid 클래스 다이어그램으로 설명합니다. |
 | [text-tree](skills/text-tree/SKILL.md) | Unity 오브젝트·컴포넌트, 폴더·파일 및 일반 계층 정보를 텍스트 트리로 설명합니다. |
+| [csharp-project-style](skills/csharp-project-style/SKILL.md) | Unity 및 일반 C# 코드의 선언·멤버 순서·비동기·직렬화 필드 스타일을 적용합니다. |
 
 ## Codex 설치 및 갱신
+
+`csharp-project-style`은 Unity와 일반 C# 코드의 작성 스타일을 관리합니다. 정적 멤버는 최상단에 모으고, Unity 컴포넌트 필드는 Odin이 있으면 `Title`, 없으면 `Header`를 사용합니다.
 
 이 저장소를 복제한 뒤 저장소 루트에서 PowerShell로 실행합니다. 비공개 저장소이므로 GitHub 접근 권한이 필요합니다.
 
@@ -39,6 +42,7 @@ Get-ChildItem -LiteralPath './skills' -Directory | ForEach-Object {
 | “Foundation 커밋·푸시하고 지정 프로젝트에 적용해줘” | `package-dev-release` |
 | “이 클래스들의 관계를 구조도로 보여줘” | `class-diagram` |
 | “플레이어 하이어라키를 텍스트 트리로 보여줘” / “폴더 구조 보여줘” | `text-tree` |
+| “이 C# 코드를 프로젝트 스타일에 맞춰 작성해줘” | `csharp-project-style` |
 
 텍스트 트리를 명시하면 클래스 구조도 `text-tree`를 우선합니다. Unity 오브젝트는 `Player [Transform, PlayerActor]`처럼 이름과 컴포넌트를 한 줄에 표시합니다. 배포 방법에 대한 질문이나 계획 요청만으로 커밋·푸시하지 않습니다.
 
