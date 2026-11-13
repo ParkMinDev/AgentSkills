@@ -7,13 +7,15 @@ Mermaid 코드 블록은 렌더링 가능한 원문이다. 처리시간은 측�
 
 ```mermaid
 flowchart TD
+    START(["시작 · 파일 명세 생성<br/>저"]) --> A
     A["입력 옵션 확인<br/>저"] --> B["파일 경로 목록 조회<br/>중"]
     B --> C["전체 파일 읽기·해시 계산<br/>고"]
     C --> D["작은 결과 명세 저장<br/>저"]
+    D --> END(["종료 · 명세 저장 완료<br/>저"])
     classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
     classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
     classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class A,D low
+    class START,END,A,D low
     class B medium
     class C high
 ```
@@ -25,6 +27,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
+    START(["시작 · 패치 제작 요청<br/>저"]) --> A
     A["잠금 획득·인덱스 읽기<br/>저"] --> B["옵션·목표 버전·이전 명세 확인<br/>저"]
     B --> C["임시 폴더·이번 버전 미게시 잔여물 삭제<br/>중"]
     C --> D["입력 빌드 경로·링크 검사<br/>중"]
@@ -51,10 +54,11 @@ flowchart TD
     T --> U
     U --> V["최종 위치로 이동·인덱스 게시<br/>저"]
     V --> W["임시 폴더 정리·잠금 해제<br/>중"]
+    W --> END(["종료 · 패치 제작 완료<br/>저"])
     classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
     classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
     classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class A,B,E,F,H,L,M,N,Q,S,T,U,V low
+    class START,END,A,B,E,F,H,L,M,N,Q,S,T,U,V low
     class C,D,I,W medium
     class G,J,K,O,P,R high
 ```

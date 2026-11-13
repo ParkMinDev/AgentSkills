@@ -34,6 +34,7 @@
 
 ```mermaid
 flowchart TD
+    START(["시작 · 패치 제작 요청<br/>저 · 별도 계측 없음"]) --> A
     A["입력 확인·빌드 이동<br/>저 · 0.1초"] --> B["파일 해시·병렬 압축<br/>고 · 1.2초"]
     B --> C["압축파일 저장·해시 계산<br/>중 · 0.8초"]
     C --> D{"이전 릴리즈 존재?<br/>저 · 입력 확인에 포함"}
@@ -49,10 +50,11 @@ flowchart TD
         F -->|예약 완료| J["실행 중 작업 완료 대기·결과 취합<br/>고 · 델타 단계에 포함"]
     end
     J --> K["명세·인덱스 게시·잠금 해제<br/>저 · 0.1초"]
+    K --> END(["종료 · 패치 제작 완료<br/>저 · 별도 계측 없음"])
     classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
     classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
     classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class A,D,E,F,H,K low
+    class START,END,A,D,E,F,H,K low
     class C,I medium
     class B,G,J high
 ```
