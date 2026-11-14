@@ -6,6 +6,7 @@
 
 | 스킬 | 용도 |
 | --- | --- |
+| [explain-code-changes](skills/explain-code-changes/SKILL.md) | 코드 추가·수정·삭제 설명을 실제 파일·함수에 연결하고, 작업 종류에 따라 알고리즘·선언·관계로 표현합니다. |
 | [algorithm-flowchart](skills/algorithm-flowchart/SKILL.md) | 알고리즘을 Mermaid 순서도로 설명하고 저·중·고 색상을 표시합니다. 측정 요청 시 실제 실행시간도 표시하며, 일반·패치 제작·병렬 측정 예시를 포함합니다. |
 | [package-dev-release](skills/package-dev-release/SKILL.md) | PackageDev와 자체 패키지의 의존 버전, 변경 이력, 커밋·푸시 및 지정 프로젝트 적용을 처리합니다. |
 | [class-diagram](skills/class-diagram/SKILL.md) | 실제 코드나 합의된 설계의 클래스·인터페이스 관계를 Mermaid 클래스 다이어그램으로 설명합니다. |
@@ -38,6 +39,7 @@ Get-ChildItem -LiteralPath './skills' -Directory | ForEach-Object {
 
 | 요청 예시 | 스킬 |
 | --- | --- |
+| “작업 계획 설명해줘” / “정리할 코드 찾아봐” / “왜 바꾸는지 쉽게 설명해줘” | `explain-code-changes` |
 | “이 함수 순서도 보여줘” | `algorithm-flowchart` |
 | “측정 포함 순서도 보여줘” / “이전 측정 결과로 순서도 보여줘” | `algorithm-flowchart` |
 | “Foundation 커밋·푸시하고 지정 프로젝트에 적용해줘” | `package-dev-release` |
