@@ -11,6 +11,7 @@
 | [class-diagram](skills/class-diagram/SKILL.md) | 실제 코드나 합의된 설계의 클래스·인터페이스 관계를 Mermaid 클래스 다이어그램으로 설명합니다. |
 | [text-tree](skills/text-tree/SKILL.md) | Unity 오브젝트·컴포넌트, 폴더·파일 및 일반 계층 정보를 텍스트 트리로 설명합니다. |
 | [csharp-project-style](skills/csharp-project-style/SKILL.md) | Unity 및 일반 C# 코드의 선언·멤버 순서·비동기·직렬화 필드 스타일을 적용합니다. |
+| [view-model-composition](skills/view-model-composition/SKILL.md) | 뷰·모델·러너·바인더를 요청한 조합으로 구성하고, 책임·수명 및 uGUI 계층을 정리합니다. |
 
 ## Codex 설치 및 갱신
 
@@ -43,6 +44,7 @@ Get-ChildItem -LiteralPath './skills' -Directory | ForEach-Object {
 | “이 클래스들의 관계를 구조도로 보여줘” | `class-diagram` |
 | “플레이어 하이어라키를 텍스트 트리로 보여줘” / “폴더 구조 보여줘” | `text-tree` |
 | “이 C# 코드를 프로젝트 스타일에 맞춰 작성해줘” | `csharp-project-style` |
+| “뷰 만들어줘” / “모델 만들어줘” / “뷰 모델 러너 구조로 만들어줘” / “뷰 모델 바인더 구조로 만들어줘” | `view-model-composition` |
 
 텍스트 트리를 명시하면 클래스 구조도 `text-tree`를 우선합니다. Unity 오브젝트는 `Player [Transform, PlayerActor]`처럼 이름과 컴포넌트를 한 줄에 표시합니다. 배포 방법에 대한 질문이나 계획 요청만으로 커밋·푸시하지 않습니다.
 
