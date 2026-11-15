@@ -6,6 +6,7 @@
 
 | 스킬 | 용도 |
 | --- | --- |
+| [project-work-planning](skills/project-work-planning/SKILL.md) | 전체 계획과 현재 작업 메모를 분리하고, 고정 방침을 유지하며 완료 후 현재 작업을 비웁니다. |
 | [explain-code-changes](skills/explain-code-changes/SKILL.md) | 코드 추가·수정·삭제 설명을 실제 파일·함수에 연결하고, 작업 종류에 따라 알고리즘·선언·관계로 표현합니다. |
 | [algorithm-flowchart](skills/algorithm-flowchart/SKILL.md) | 알고리즘을 Mermaid 순서도로 설명하고 저·중·고 색상을 표시합니다. 측정 요청 시 실제 실행시간도 표시하며, 일반·패치 제작·병렬 측정 예시를 포함합니다. |
 | [package-dev-release](skills/package-dev-release/SKILL.md) | PackageDev와 자체 패키지의 의존 버전, 변경 이력, 커밋·푸시 및 지정 프로젝트 적용을 처리합니다. |
@@ -39,6 +40,7 @@ Get-ChildItem -LiteralPath './skills' -Directory | ForEach-Object {
 
 | 요청 예시 | 스킬 |
 | --- | --- |
+| “전체 계획을 보고 이번 작업 계획을 세워줘” / “끝난 작업 메모 정리해줘” | `project-work-planning` |
 | “작업 계획 설명해줘” / “정리할 코드 찾아봐” / “왜 바꾸는지 쉽게 설명해줘” | `explain-code-changes` |
 | “이 함수 순서도 보여줘” | `algorithm-flowchart` |
 | “측정 포함 순서도 보여줘” / “이전 측정 결과로 순서도 보여줘” | `algorithm-flowchart` |
