@@ -180,103 +180,80 @@ flowchart TD
 
 ③의 반환·오류·취소는 ②의 호출 노드 출력과, ②의 출력은 ①의 호출 노드 출력과 대응한다. 부모 그림에 자식의 파일 순회나 복사 로직을 다시 펼치지 않는다.
 
-## 5. 함수명 상단 표시 — 큰 덩어리
+## 5. 전체 선언부와 파라미터 개행 — 큰 덩어리
 
-아래 함수는 표현을 위한 제안이며 실제 프로젝트 구현을 뜻하지 않는다. 첫 줄은 예정 접근 범위·클래스·함수명, 다음 줄은 역할이다. 상위 함수는 `[예정] ~ Patcher.PatchToLatestAsync()`(internal), 아래 보조 함수는 `-`(private)로 계획했다. 공개 함수는 `+`, protected 함수는 `#`로 표시한다. 비용은 색으로만 표시하고 저·중·고 글자를 노드에 붙이지 않는다. 정상 경로만 보여주는 예시이며 오류·취소 처리를 생략했다.
+아래는 표현용 가상 선언이다. 실제 프로젝트의 구현이나 확정된 함수 구성을 뜻하지 않는다. 전체 함수를 바깥 영역으로 감싸고, 보조 호출은 이중선 노드로 표시한다. 파라미터는 한 줄에 하나씩, 닫는 괄호는 별도 줄로 표시한다. 접근 제한자를 쓰므로 접근 기호는 중복하지 않는다. 정상 흐름만 보여주며 오류·취소는 생략했다.
 
 ```mermaid
----
-title: "[예정] ~ Patcher.PatchToLatestAsync()"
----
 flowchart TD
-    START(["시작"])
-    FETCH[["[예정] - Patcher.GetLatestReleaseAsync()<br/>최신 목표 명세 조회·고정"]]
-    PLAN[["[예정] - Patcher.CreateFilePlanAsync()<br/>로컬 파일 확인·작업 분류"]]
-    PREPARE[["[예정] - Patcher.PrepareFilesAsync()<br/>목표 파일 다운로드·검증"]]
-    END(["반환 · 준비 완료"])
-    START --> FETCH
-    FETCH --> PLAN
-    PLAN --> PREPARE
-    PREPARE --> END
+    subgraph MAIN["[예시] Patcher<br/>internal static async Task PrepareLatestAsync(<br/>　string directoryPath,<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"]
+        START(["시작"])
+        FETCH[["[예시] Patcher<br/>private static async Task&lt;ReleaseManifest&gt; GetLatestReleaseAsync(<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)<br/>최신 목표 명세 조회·고정"]]
+        PREPARE[["[예시] Patcher<br/>private static async Task PrepareFilesAsync(<br/>　string directoryPath,<br/>　ReleaseManifest manifest,<br/>　CancellationToken cancellationToken<br/>)<br/>필요한 목표 파일 준비"]]
+        DONE(["반환 · 준비 완료"])
+        START --> FETCH
+        FETCH --> PREPARE
+        PREPARE --> DONE
+    end
     classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
     classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
     classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class START,END low
+    class START,DONE low
     class FETCH medium
-    class PLAN,PREPARE high
+    class PREPARE high
     linkStyle default stroke:#16A34A,stroke-width:2px
 ```
 
-## 6. 여러 큰 함수 영역 안에 세부 노드
+## 6. 바깥 함수 영역 안에 여러 내부 함수 영역
 
-예시 5의 같은 세 호출을 한 그림 안에서 펼친다. 각 영역의 제목에 함수명을 표시하므로 세부 조건·반복마다 이름을 반복하지 않는다. 아래는 순차 파일 준비를 가정한 설명용 계획이다. 작업 계획에는 보존 대상·수리 대상이 이미 구분돼 있고, 이 예시는 준비 대상만 순회한다. 파일 교체·설치 기록 저장은 이 예시 범위 밖이다.
+예시 5의 두 호출을 영역으로 펼친다. 선언부만을 위한 실행 노드는 만들지 않는다. 전체 함수 선언은 바깥 영역 제목에, 보조 함수 선언은 내부 영역 제목에 표시한다. `title`의 줄바꿈에 의존하지 않고 `<br/>`를 사용한다.
 
-노드 색은 상대 비용(초록·노랑·빨강), 선 색은 정상 초록·오류 빨강·사용자 취소 노랑·공통 정리 회색이다. 이 예시는 준비 함수의 오류·취소만 펼쳤으며 조회·분류 오류도 실제 구현에서는 정리 후 전달해야 한다.
+설명용 순차 파일 준비이며 보존·델타 정책은 생략했다. 파일 교체·설치 기록 저장도 범위 밖이다. 정상은 초록, 오류는 빨강, 사용자 취소는 노랑, 공통 정리는 회색 선이다. 영역에서 정리로 향하는 선은 해당 함수 전체에 적용된다.
 
 ```mermaid
----
-title: "[예정] ~ Patcher.PatchToLatestAsync()"
----
 flowchart TD
-    START(["시작"])
-
-    subgraph FETCH["[예정] - Patcher.GetLatestReleaseAsync()"]
-        A["서버 인덱스 조회"]
-        B["최신 버전 명세 조회·검사"]
-        C["이번 작업의 목표 고정"]
-        A --> B
+    subgraph MAIN["[예시] Patcher<br/>internal static async Task PrepareLatestAsync(<br/>　string directoryPath,<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"]
+        START(["시작"])
+        subgraph FETCH["[예시] Patcher<br/>private static async Task&lt;ReleaseManifest&gt; GetLatestReleaseAsync(<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"]
+            A["서버 인덱스 조회"]
+            B["최신 명세 조회·검사 및 목표 고정"]
+            A --> B
+        end
+        subgraph PREPARE["[예시] Patcher<br/>private static async Task PrepareFilesAsync(<br/>　string directoryPath,<br/>　ReleaseManifest manifest,<br/>　CancellationToken cancellationToken<br/>)"]
+            C{"준비할 다음 파일이 있는가?"}
+            D["임시 위치로 다운로드"]
+            E["크기·해시 검증"]
+            C -->|있음| D
+            D --> E
+            E --> C
+        end
+        CLEAN["작업 종료·스트림 해제 후<br/>실패 시 임시 자료 정리"]
+        RESULT{"보관한 처리 결과"}
+        DONE(["반환 · 준비 완료"])
+        ERROR(["종료 · 오류 전달"])
+        CANCEL(["종료 · 취소 전달"])
+        START --> A
         B --> C
+        C -->|없음| CLEAN
+        FETCH -->|오류| CLEAN
+        PREPARE -->|오류| CLEAN
+        FETCH -->|사용자 취소| CLEAN
+        PREPARE -->|사용자 취소| CLEAN
+        CLEAN -->|공통 정리| RESULT
+        RESULT -->|성공| DONE
+        RESULT -->|오류| ERROR
+        RESULT -->|사용자 취소| CANCEL
     end
-
-    subgraph PLAN["[예정] - Patcher.CreateFilePlanAsync()"]
-        D["이전·목표 파일 목록 비교"]
-        E["보존 조건 판단"]
-        F["필요한 실제 파일 크기·해시 확인"]
-        G["보존·준비·삭제 대상 분류"]
-        D --> E
-        E --> F
-        F --> G
-    end
-
-    subgraph PREPARE["[예정] - Patcher.PrepareFilesAsync()"]
-        H{"준비할 다음 파일이 있는가?"}
-        I["목표 파일을 임시 위치로 다운로드"]
-        J["크기·해시 검증"]
-        K["해당 파일 준비 완료"]
-        H -->|있음| I
-        I --> J
-        J -->|검증 성공| K
-        K --> H
-    end
-
-    CLEAN["열린 스트림 정리·결과 보관<br/>실패 시 이번 준비 파일 정리"]
-    RESULT{"처리 결과"}
-    DONE(["반환 · 준비 완료"])
-    ERROR(["종료 · 오류 전달"])
-    CANCEL(["종료 · 취소 전달"])
-
-    START --> A
-    C --> D
-    G --> H
-    H -->|없음: 정상| CLEAN
-    I -->|다운로드 실패| CLEAN
-    J -->|검증 실패| CLEAN
-    I -->|사용자 취소| CLEAN
-    CLEAN -->|공통 정리| RESULT
-    RESULT -->|성공| DONE
-    RESULT -->|오류| ERROR
-    RESULT -->|사용자 취소| CANCEL
-
     classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
     classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
     classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class START,C,E,H,K,RESULT,DONE,ERROR,CANCEL low
-    class A,B,D,G,CLEAN medium
-    class F,I,J high
+    class START,C,RESULT,DONE,ERROR,CANCEL low
+    class A,B,CLEAN medium
+    class D,E high
     linkStyle default stroke:#16A34A,stroke-width:2px
-    linkStyle 13,14,18 stroke:#DC2626,stroke-width:2px
-    linkStyle 15,19 stroke:#EAB308,stroke-width:3px
-    linkStyle 16 stroke:#64748B,stroke-width:2px
+    linkStyle 7,8,13 stroke:#DC2626,stroke-width:2px
+    linkStyle 9,10,14 stroke:#EAB308,stroke-width:3px
+    linkStyle 11 stroke:#64748B,stroke-width:2px
 ```
 
-동일한 함수 호출을 영역 바깥에도 별도 실행 노드로 추가하지 않는다. 영역 사이의 선은 앞 함수의 반환 지점에서 다음 함수의 진입 지점으로 연결한다. 큰 영역은 비용색으로 채우지 않고 내부 노드만 비용색을 가진다. 함수가 없는 단계에 이름을 만들어 붙이지 않는다.
+함수 영역은 중립적인 외곽선으로 두고 내부 노드에만 비용색을 적용한다. 바깥 함수 영역을 포함한 두 단계 구조는 선언부의 개행과 함수 소속을 표현하기 위한 것이며 임의의 제품 함수 분리를 의미하지 않는다.
