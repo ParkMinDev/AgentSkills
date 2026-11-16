@@ -182,14 +182,16 @@ flowchart TD
 
 ## 5. 전체 선언부와 파라미터 개행 — 큰 덩어리
 
+파라미터의 타입·이름·기본값은 한 줄이다. 예를 들어 `CancellationToken<br/>cancellationToken = default`로 나누지 않고 `CancellationToken&nbsp;cancellationToken&nbsp;=&nbsp;default`로 표시한다. 아래 시작·호출 노드는 자동 줄바꿈을 줄이기 위해 파라미터 내부에 줄바꿈 없는 공백을 사용한다.
+
 아래는 표현용 가상 선언이다. 실제 프로젝트의 구현이나 확정된 함수 구성을 뜻하지 않는다. 전체 함수를 바깥 영역으로 감싸고 선언부는 시작 노드에 넣는다. 보조 호출은 이중선 노드로 표시한다. 파라미터는 한 줄에 하나씩, 닫는 괄호는 별도 줄로 표시한다. 접근 제한자를 쓰므로 접근 기호는 중복하지 않는다. 정상 흐름만 보여주며 오류·취소는 생략했다.
 
 ```mermaid
 flowchart TD
     subgraph MAIN["[예시] Patcher.PrepareLatestAsync"]
-        START(["시작<br/>[예시] Patcher<br/>internal static async Task PrepareLatestAsync(<br/>　string directoryPath,<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"])
-        FETCH[["[예시] Patcher<br/>private static async Task&lt;ReleaseManifest&gt; GetLatestReleaseAsync(<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)<br/>최신 목표 명세 조회·고정"]]
-        PREPARE[["[예시] Patcher<br/>private static async Task PrepareFilesAsync(<br/>　string directoryPath,<br/>　ReleaseManifest manifest,<br/>　CancellationToken cancellationToken<br/>)<br/>필요한 목표 파일 준비"]]
+        START(["시작<br/>[예시] Patcher<br/>internal static async Task PrepareLatestAsync(<br/>　string&nbsp;directoryPath,<br/>　Uri&nbsp;serverRoot,<br/>　CancellationToken&nbsp;cancellationToken<br/>)"])
+        FETCH[["[예시] Patcher<br/>private static async Task&lt;ReleaseManifest&gt; GetLatestReleaseAsync(<br/>　Uri&nbsp;serverRoot,<br/>　CancellationToken&nbsp;cancellationToken<br/>)<br/>최신 목표 명세 조회·고정"]]
+        PREPARE[["[예시] Patcher<br/>private static async Task PrepareFilesAsync(<br/>　string&nbsp;directoryPath,<br/>　ReleaseManifest&nbsp;manifest,<br/>　CancellationToken&nbsp;cancellationToken<br/>)<br/>필요한 목표 파일 준비"]]
         DONE(["반환 · 준비 완료"])
         START --> FETCH
         FETCH --> PREPARE
@@ -213,16 +215,16 @@ flowchart TD
 ```mermaid
 flowchart TD
     subgraph MAIN["[예시] Patcher.PrepareLatestAsync"]
-        START(["시작<br/>[예시] Patcher<br/>internal static async Task PrepareLatestAsync(<br/>　string directoryPath,<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"])
+        START(["시작<br/>[예시] Patcher<br/>internal static async Task PrepareLatestAsync(<br/>　string&nbsp;directoryPath,<br/>　Uri&nbsp;serverRoot,<br/>　CancellationToken&nbsp;cancellationToken<br/>)"])
         subgraph FETCH["Patcher.GetLatestReleaseAsync"]
-            FETCH_START(["시작<br/>[예시] Patcher<br/>private static async Task&lt;ReleaseManifest&gt; GetLatestReleaseAsync(<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"])
+            FETCH_START(["시작<br/>[예시] Patcher<br/>private static async Task&lt;ReleaseManifest&gt; GetLatestReleaseAsync(<br/>　Uri&nbsp;serverRoot,<br/>　CancellationToken&nbsp;cancellationToken<br/>)"])
             FETCH_START --> A
             A["서버 인덱스 조회"]
             B["최신 명세 조회·검사 및 목표 고정"]
             A --> B
         end
         subgraph PREPARE["Patcher.PrepareFilesAsync"]
-            PREPARE_START(["시작<br/>[예시] Patcher<br/>private static async Task PrepareFilesAsync(<br/>　string directoryPath,<br/>　ReleaseManifest manifest,<br/>　CancellationToken cancellationToken<br/>)"])
+            PREPARE_START(["시작<br/>[예시] Patcher<br/>private static async Task PrepareFilesAsync(<br/>　string&nbsp;directoryPath,<br/>　ReleaseManifest&nbsp;manifest,<br/>　CancellationToken&nbsp;cancellationToken<br/>)"])
             PREPARE_START --> C
             C{"준비할 다음 파일이 있는가?"}
             D["임시 위치로 다운로드"]
