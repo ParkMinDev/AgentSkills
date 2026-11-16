@@ -182,12 +182,12 @@ flowchart TD
 
 ## 5. 전체 선언부와 파라미터 개행 — 큰 덩어리
 
-아래는 표현용 가상 선언이다. 실제 프로젝트의 구현이나 확정된 함수 구성을 뜻하지 않는다. 전체 함수를 바깥 영역으로 감싸고, 보조 호출은 이중선 노드로 표시한다. 파라미터는 한 줄에 하나씩, 닫는 괄호는 별도 줄로 표시한다. 접근 제한자를 쓰므로 접근 기호는 중복하지 않는다. 정상 흐름만 보여주며 오류·취소는 생략했다.
+아래는 표현용 가상 선언이다. 실제 프로젝트의 구현이나 확정된 함수 구성을 뜻하지 않는다. 전체 함수를 바깥 영역으로 감싸고 선언부는 시작 노드에 넣는다. 보조 호출은 이중선 노드로 표시한다. 파라미터는 한 줄에 하나씩, 닫는 괄호는 별도 줄로 표시한다. 접근 제한자를 쓰므로 접근 기호는 중복하지 않는다. 정상 흐름만 보여주며 오류·취소는 생략했다.
 
 ```mermaid
 flowchart TD
-    subgraph MAIN["[예시] Patcher<br/>internal static async Task PrepareLatestAsync(<br/>　string directoryPath,<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"]
-        START(["시작"])
+    subgraph MAIN["[예시] Patcher.PrepareLatestAsync"]
+        START(["시작<br/>[예시] Patcher<br/>internal static async Task PrepareLatestAsync(<br/>　string directoryPath,<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"])
         FETCH[["[예시] Patcher<br/>private static async Task&lt;ReleaseManifest&gt; GetLatestReleaseAsync(<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)<br/>최신 목표 명세 조회·고정"]]
         PREPARE[["[예시] Patcher<br/>private static async Task PrepareFilesAsync(<br/>　string directoryPath,<br/>　ReleaseManifest manifest,<br/>　CancellationToken cancellationToken<br/>)<br/>필요한 목표 파일 준비"]]
         DONE(["반환 · 준비 완료"])
@@ -206,20 +206,24 @@ flowchart TD
 
 ## 6. 바깥 함수 영역 안에 여러 내부 함수 영역
 
-예시 5의 두 호출을 영역으로 펼친다. 선언부만을 위한 실행 노드는 만들지 않는다. 전체 함수 선언은 바깥 영역 제목에, 보조 함수 선언은 내부 영역 제목에 표시한다. `title`의 줄바꿈에 의존하지 않고 `<br/>`를 사용한다.
+예시 5의 두 호출을 영역으로 펼친다. 선언부만을 위한 실행 노드는 만들지 않는다. 영역 제목은 짧은 함수명으로 표시하고, 전체 함수와 보조 함수 선언은 각각의 시작 노드에 표시한다. `title`의 줄바꿈에 의존하지 않고 `<br/>`를 사용한다.
 
 설명용 순차 파일 준비이며 보존·델타 정책은 생략했다. 파일 교체·설치 기록 저장도 범위 밖이다. 정상은 초록, 오류는 빨강, 사용자 취소는 노랑, 공통 정리는 회색 선이다. 영역에서 정리로 향하는 선은 해당 함수 전체에 적용된다.
 
 ```mermaid
 flowchart TD
-    subgraph MAIN["[예시] Patcher<br/>internal static async Task PrepareLatestAsync(<br/>　string directoryPath,<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"]
-        START(["시작"])
-        subgraph FETCH["[예시] Patcher<br/>private static async Task&lt;ReleaseManifest&gt; GetLatestReleaseAsync(<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"]
+    subgraph MAIN["[예시] Patcher.PrepareLatestAsync"]
+        START(["시작<br/>[예시] Patcher<br/>internal static async Task PrepareLatestAsync(<br/>　string directoryPath,<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"])
+        subgraph FETCH["Patcher.GetLatestReleaseAsync"]
+            FETCH_START(["시작<br/>[예시] Patcher<br/>private static async Task&lt;ReleaseManifest&gt; GetLatestReleaseAsync(<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"])
+            FETCH_START --> A
             A["서버 인덱스 조회"]
             B["최신 명세 조회·검사 및 목표 고정"]
             A --> B
         end
-        subgraph PREPARE["[예시] Patcher<br/>private static async Task PrepareFilesAsync(<br/>　string directoryPath,<br/>　ReleaseManifest manifest,<br/>　CancellationToken cancellationToken<br/>)"]
+        subgraph PREPARE["Patcher.PrepareFilesAsync"]
+            PREPARE_START(["시작<br/>[예시] Patcher<br/>private static async Task PrepareFilesAsync(<br/>　string directoryPath,<br/>　ReleaseManifest manifest,<br/>　CancellationToken cancellationToken<br/>)"])
+            PREPARE_START --> C
             C{"준비할 다음 파일이 있는가?"}
             D["임시 위치로 다운로드"]
             E["크기·해시 검증"]
@@ -232,8 +236,8 @@ flowchart TD
         DONE(["반환 · 준비 완료"])
         ERROR(["종료 · 오류 전달"])
         CANCEL(["종료 · 취소 전달"])
-        START --> A
-        B --> C
+        START --> FETCH_START
+        B --> PREPARE_START
         C -->|없음| CLEAN
         FETCH -->|오류| CLEAN
         PREPARE -->|오류| CLEAN
@@ -247,13 +251,13 @@ flowchart TD
     classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
     classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
     classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class START,C,RESULT,DONE,ERROR,CANCEL low
+    class START,FETCH_START,PREPARE_START,C,RESULT,DONE,ERROR,CANCEL low
     class A,B,CLEAN medium
     class D,E high
     linkStyle default stroke:#16A34A,stroke-width:2px
-    linkStyle 7,8,13 stroke:#DC2626,stroke-width:2px
-    linkStyle 9,10,14 stroke:#EAB308,stroke-width:3px
-    linkStyle 11 stroke:#64748B,stroke-width:2px
+    linkStyle 9,10,15 stroke:#DC2626,stroke-width:2px
+    linkStyle 11,12,16 stroke:#EAB308,stroke-width:3px
+    linkStyle 13 stroke:#64748B,stroke-width:2px
 ```
 
 함수 영역은 중립적인 외곽선으로 두고 내부 노드에만 비용색을 적용한다. 바깥 함수 영역을 포함한 두 단계 구조는 선언부의 개행과 함수 소속을 표현하기 위한 것이며 임의의 제품 함수 분리를 의미하지 않는다.
