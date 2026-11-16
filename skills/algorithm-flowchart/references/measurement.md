@@ -40,6 +40,13 @@
 다음은 표현을 위한 가상 측정 기록이다. 실제 프로젝트의 실측값으로 인용하지 않는다. 세 회차 총시간이 4.2초, 4.4초, 4.8초라면 중앙값 회차인 2회차의 단계 기록만 사용한다. 저=초록, 중=노랑, 고=빨강. 델타(delta)는 이전 파일을 새 파일로 바꾸는 차이 데이터다.
 
 ```mermaid
+---
+config:
+  htmlLabels: false
+  markdownAutoWrap: false
+  flowchart:
+    wrappingWidth: 900
+---
 flowchart TD
     START(["시작 · 패치 제작 요청<br/>별도 계측 없음"]) --> A
     A["입력 확인·빌드 이동<br/>0.1초"] --> B["파일 해시·병렬 압축<br/>1.2초"]
