@@ -1,6 +1,6 @@
 interface:
   display_name: "프로젝트 작업 계획"
   short_description: "전체 계획에 완료 기록을 남기고 작업별 계획 파일의 생성·삭제를 관리합니다"
-  default_prompt: "$project-work-planning 스킬로 전체 계획을 확인하고 이번 작업 계획을 정리해줘."
+  default_prompt: "$project-work-planning 스킬로 이번 작업계획을 파일에 저장해줘."
 policy:
   allow_implicit_invocation: true
