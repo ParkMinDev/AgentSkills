@@ -1,418 +1,93 @@
-# 순서도 예시
+# Canvas 표현 예시
 
-Mermaid 코드 블록은 렌더링 가능한 원문이다. 처리시간은 측정값이 아닌 상대 추정이다.
+아래 함수와 데이터는 설명용 가상 예시이며 제품 구현이나 실제 측정 결과가 아니다. 구체적인 프로젝트의 이전 패치 정책을 그대로 옮긴 예시는 사용하지 않는다.
 
-## 1. 기본 예시
-많은 파일의 경로를 조회하고 전체 내용을 읽어 해시를 계산한 뒤 작은 명세를 저장하는 흐름이다. 저=초록 · 중=노랑 · 고=빨강.
+## 1. 시작, 분기, 반환
 
-```mermaid
----
-config:
-  htmlLabels: false
-  markdownAutoWrap: false
-  flowchart:
-    wrappingWidth: 900
----
-flowchart TD
-    START(["시작 · 파일 명세 생성"]) --> A
-    A["입력 옵션 확인"] --> B["파일 경로 목록 조회"]
-    B --> C["전체 파일 읽기·해시 계산"]
-    C --> D["작은 결과 명세 저장"]
-    D --> END(["종료 · 명세 저장 완료"])
-    classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
-    classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class START,END,A,D low
-    class B medium
-    class C high
-    linkStyle default stroke:#16A34A,stroke-width:2px
+Advanced Canvas가 활성화된 보관소에서 사용할 수 있는 작은 `.canvas` 예시다. 표준 Canvas에서는 텍스트와 선은 유지되지만 확장 도형은 표시되지 않을 수 있다.
+
+```json
+{
+  "nodes": [
+    {"id":"main","type":"group","x":0,"y":0,"width":1600,"height":1300,"label":"[가상 예시] Preparer.PrepareAsync","color":"#64748b"},
+    {"id":"start","type":"text","x":150,"y":80,"width":1200,"height":350,"color":"6","text":"### 시작\n[가상 예시] Preparer\n```csharp\npublic async Task PrepareAsync(\n    string directoryPath,\n    CancellationToken cancellationToken = default\n)\n```","styleAttributes":{"shape":"pill"}},
+    {"id":"check","type":"text","x":450,"y":500,"width":600,"height":300,"color":"4","text":"### 준비할 파일이 있는가?","styleAttributes":{"shape":"diamond","textAlign":"center"}},
+    {"id":"done","type":"text","x":150,"y":980,"width":550,"height":180,"color":"6","text":"### 반환\n처리 완료","styleAttributes":{"shape":"pill"}},
+    {"id":"skip","type":"text","x":900,"y":980,"width":550,"height":180,"color":"6","text":"### 반환\n변경 없음","styleAttributes":{"shape":"pill"}}
+  ],
+  "edges": [
+    {"id":"e1","fromNode":"start","fromSide":"bottom","toNode":"check","toSide":"top","toEnd":"arrow","color":"#16a34a"},
+    {"id":"e2","fromNode":"check","fromSide":"bottom","toNode":"done","toSide":"top","toEnd":"arrow","color":"#16a34a","label":"예"},
+    {"id":"e3","fromNode":"check","fromSide":"right","toNode":"skip","toSide":"top","toEnd":"arrow","color":"#16a34a","label":"아니오"}
+  ]
+}
 ```
 
-## 2. 실전 예시 — 패치 제작
-전제: 작업 공간은 공통 잠금을 따르는 패처만 수정한다. 입력 빌드는 같은 볼륨의 제작용 폴더로 이동하며 실패해도 복원하지 않는다. 압축 중 검증하므로 게시 직전 전체 재검증은 하지 않는다. 이 전제를 다른 구현에 자동 적용하지 않는다.
+카드 폭이 부족하면 인자의 타입과 이름을 쪼개지 않고 카드를 넓힌다. 마름모는 중앙 유효 폭에 맞게 문장을 짧게 쓰되 분기 의미를 생략하지 않는다.
 
-저=초록 · 중=노랑 · 고=빨강. 델타(delta)는 이전 파일을 새 파일로 바꾸는 차이 데이터다.
+## 2. 함수별 펼치기
 
-```mermaid
----
-config:
-  htmlLabels: false
-  markdownAutoWrap: false
-  flowchart:
-    wrappingWidth: 900
----
-flowchart TD
-    START(["시작 · 패치 제작 요청"]) --> A
-    A["잠금 획득·인덱스 읽기"] --> B["옵션·목표 버전·이전 명세 확인"]
-    B --> C["임시 폴더·이번 버전 미게시 잔여물 삭제"]
-    C --> D["입력 빌드 경로·링크 검사"]
-    D --> E["입력 빌드를 제작용 폴더로 이동<br/>기존 입력 위치에 빈 폴더 생성"]
-    E --> F["patch-info.json 제거"]
-    F --> G["파일 목록 생성·전체 크기와 해시 계산"]
-    G --> H["보존 정책·강제 갱신 버전 결정"]
-    H --> I["제작용 파일 경로·누락·추가 검사"]
-    I --> J["Releases.zip 압축하며 크기·해시 검증"]
-    J --> K["압축파일 해시 계산·릴리즈 명세 저장"]
-    K --> L{"이전 릴리즈 존재?"}
-    L -->|있음| M{"다음 파일 있음?"}
-    M -->|있음| N{"이전 명세와 비교해 변경 파일인가?"}
-    N -->|신규 또는 동일| M
-    N -->|변경| O["해당 기준 파일 크기·해시 검증"]
-    O --> P["델타 생성"]
-    P --> Q{"전체 파일보다 작음?"}
-    Q -->|예| R["델타 시험 적용·결과 검증"]
-    Q -->|아니오| S["델타 폐기"]
-    R --> M
-    S --> M
-    M -->|없음| T["델타 명세 저장"]
-    L -->|없음| U["취소 요청 확인"]
-    T --> U
-    U --> V["최종 위치로 이동·인덱스 게시"]
-    V --> W["임시 폴더 정리·잠금 해제"]
-    W --> END(["종료 · 패치 제작 완료"])
-    classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
-    classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class START,END,A,B,E,F,H,L,M,N,Q,S,T,U,V low
-    class C,D,I,W medium
-    class G,J,K,O,P,R high
-    linkStyle default stroke:#16A34A,stroke-width:2px
+상위 시작 → 명세 조회 호출 → 파일 준비 호출 → 반환 흐름이라면:
+
+- 바깥 그룹: `Preparer.PrepareAsync`, 시작 카드에 전체 선언부.
+- 첫 내부 그룹: `GetManifestAsync`, 그 그룹의 시작 카드에 해당 선언부와 조회 단계.
+- 둘째 내부 그룹: `PrepareFilesAsync`, 시작 카드와 파일별 반복/실패 처리.
+- 같은 함수를 펼쳤다면 상위에 별도 실행 호출 카드를 남겨 두 번 실행하는 모양으로 그리지 않는다.
+- 짧은 경로 반환 함수는 호출 역할만 표시한다. 독립 Canvas로 분리할 때는 번호와 파일 링크를 연결한다.
+
+## 3. 세 병렬 흐름
+
+가상 배치 예시다. 좌표는 예시이며 실제 카드 크기에 맞춰 조정한다.
+
+- 바깥 `병렬 처리`: x=0, y=800, width=6600, height=2800.
+- 내부 `다운로드`: x=100, y=1000, width=2000, height=2400.
+- 내부 `델타 적용`: x=2300, y=1000, width=2000, height=2400.
+- 내부 `최종 검증`: x=4500, y=1000, width=2000, height=2400.
+- 함께 시작 카드는 바깥 그룹 위에, 모든 파일 완료와 작업자 종료 대기는 아래에 둔다. 두 실선은 바깥 그룹을 연결한다.
+
+각 내부 그룹의 위에는 대기열, 가운데에는 처리와 조건/반복, 아래에는 이벤트 노드를 놓는다. 파랑 테두리와 짙은 바탕으로 독립 흐름을 구분한다. 내부 영역은 스레드 하나가 아니며 작업자 수를 별도로 쓴다.
+
+전달 선은 이벤트에서 대상 대기열로 향한다. 예시:
+
+```json
+{"id":"deltaevent","fromNode":"downloadDeltaEvent","fromSide":"right","toNode":"deltaQueue","toSide":"left","toEnd":"arrow","label":"델타 자료 전달","color":"#60a5fa","styleAttributes":{"path":"dotted"}}
 ```
 
-- 해시 알고리즘이 바뀌면 보존 정책·델타 대상 판단에도 이전 파일 읽기가 추가된다.
-- 이동 후 게시 전 실패·취소 시 복원하지 않고 잔여물을 남기며 잠금은 해제한다. 다음 작업은 정해진 미게시 잔여물만 정리한다.
-- 게시 확정 구간부터는 취소하지 않는다. 게시 후 정리 실패는 게시 성공과 구분해 경고한다.
+실제 Canvas에는 참조하는 두 노드가 있어야 한다. 다른 이벤트도 각각 표현한다.
 
-## 3. 단일 순서도 — 펼칠 수 있는 호출 강조
+- 다운로드: 델타 완료 → 적용 대기열, 전체 파일 완료 → 검증 대기열.
+- 델타 적용: 다음 델타 요청 → 다운로드 대기열, 목표 도달 → 검증 대기열, 적용 실패 → 수리 요청.
+- 검증: 실패 → 수리 요청, 성공 → 파일 완료.
 
-아래와 다음 다중 예시는 설명용 가상 코드다. 특정 프로젝트의 구현 완료를 뜻하지 않는다. PrepareAsync는 CopyLauncherToTempAsync를 호출하고 실패/취소 시 자원을 정리한다. 노드 색은 상대 비용, 선 색은 정상 초록·오류 빨강·사용자 취소 노랑·공통 정리 회색이다.
+잠깐 큐가 비었다고 종료하지 않는다. 모든 대상 완료 후 작업자 종료를 기다린다. 해당 알고리즘이 결과만 준비하는 구조라면 “원본 교체”를 임의로 끼워 넣지 않는다.
 
-```mermaid
----
-config:
-  htmlLabels: false
-  markdownAutoWrap: false
-  flowchart:
-    wrappingWidth: 900
----
-flowchart TD
-    START(["시작 · PrepareAsync"]) --> CALL[["LocalInstallRoot.CopyLauncherToTempAsync()<br/>내부 펼치기 가능"]]
-    CALL -->|정상| CLEAN["결과 보관·자원 정리"]
-    CALL -->|오류| CLEAN
-    CALL -->|사용자 취소| CLEAN
-    CLEAN -->|공통 정리| RESULT{"보관한 결과는?"}
-    RESULT -->|정상| DONE(["반환 · 준비 완료"])
-    RESULT -->|오류| ERROR(["종료 · 오류 전달"])
-    RESULT -->|사용자 취소| CANCEL(["종료 · 취소 전달"])
-    classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class START,CLEAN,RESULT,DONE,ERROR,CANCEL low
-    class CALL high
-    linkStyle default stroke:#16A34A,stroke-width:2px
-    linkStyle 2,6 stroke:#DC2626,stroke-width:2px
-    linkStyle 3,7 stroke:#EAB308,stroke-width:3px
-    linkStyle 4 stroke:#64748B,stroke-width:2px
+## 4. 실측 표시
+
+카드 안:
+
+```markdown
+### 델타 적용
+
+**시간 0.976초 | 최대 전용 29.07MB**
+
+앱 인접 업데이트, 31회, 동시 호출 중복을 제외한 활동시간.
+메모리는 해당 구간 프로세스 전체 관측값.
 ```
 
-## 4. 다중 순서도 — 함수별 책임 분리
+바깥 병렬 그룹 제목은 짧게 `병렬 전체 | 1.088초 | 최대 전용 29.07MB`로 표시하고 자세한 조건은 읽는 방법 카드에 둔다. 위 숫자는 서식 예시이며 해당 프로젝트의 실측으로 재사용하지 않는다. 병렬 시간과 메모리는 더하지 않는다.
 
-“멀티 순서도로 보여줘” 요청이면 다음처럼 펼친다. 경로 프로퍼티와 단순 위임 함수는 추가 그림으로 만들지 않는다. 아래는 복사 책임을 설명하는 예시이며 병렬 처리를 가정하지 않는다. 실제 코드가 병렬이면 작업자 수와 전체 종료 대기를 별도로 반영한다.
+## 5. 변경과 메모리 피크 강조
 
-### ① Launcher.cs · PrepareAsync
+아래는 서로 독립된 두 표시다. 첫 노드는 수정됐지만 피크는 아니고, 두 번째는 피크가 관측됐지만 수정됐다는 뜻은 아니다. 두 조건을 모두 충족하면 두 속성을 함께 둔다.
 
-자원/잠금은 상위 함수가 관리한다. 자식 ②·③에서는 다시 획득하지 않는다. 간결하게 표현하기 위해 획득 실패는 종료 예외로 바로 전달하며, 획득하지 못한 자원은 해제하지 않는다.
-
-```mermaid
----
-config:
-  htmlLabels: false
-  markdownAutoWrap: false
-  flowchart:
-    wrappingWidth: 900
----
-flowchart TD
-    START(["시작 · PrepareAsync"]) --> ACQUIRE["설치 루트 확인·잠금 획득"]
-    ACQUIRE --> CALL[["LocalInstallRoot.CopyLauncherToTempAsync()<br/>② 참고"]]
-    ACQUIRE -->|획득 실패| ERROR(["종료 · 오류 전달"])
-    CALL -->|정상| CLEAN["결과 보관·잠금 해제"]
-    CALL -->|오류| CLEAN
-    CALL -->|사용자 취소| CLEAN
-    CLEAN -->|공통 정리| RESULT{"보관한 결과는?"}
-    RESULT -->|정상| DONE(["반환 · 준비 완료"])
-    RESULT -->|오류| ERROR
-    RESULT -->|사용자 취소| CANCEL(["종료 · 취소 전달"])
-    classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class START,ACQUIRE,CLEAN,RESULT,DONE,ERROR,CANCEL low
-    class CALL high
-    linkStyle default stroke:#16A34A,stroke-width:2px
-    linkStyle 2,4,8 stroke:#DC2626,stroke-width:2px
-    linkStyle 5,9 stroke:#EAB308,stroke-width:3px
-    linkStyle 6 stroke:#64748B,stroke-width:2px
+```json
+{"id":"changed","type":"text","x":0,"y":0,"width":650,"height":240,"color":"3","text":"### 이번에 변경한 처리","styleAttributes":{"revisionEmphasis":"current"}}
 ```
 
-### ② LocalInstallRoot.cs · CopyLauncherToTempAsync
-
-전제: ①이 설치 루트 잠금을 보유한다. 임시 영역은 이 함수가 관리하며 파일 순회는 ③에 위임한다. 실패 정리 중 오류가 나도 원래 오류·취소 원인을 유지한다.
-
-```mermaid
----
-config:
-  htmlLabels: false
-  markdownAutoWrap: false
-  flowchart:
-    wrappingWidth: 900
----
-flowchart TD
-    START(["시작 · CopyLauncherToTempAsync"]) --> CHECK["원본·임시 경로 및 관리 영역 검사"]
-    CHECK --> PREPARE["이전 임시 영역 정리·폴더 생성"]
-    CHECK -->|검사 오류| ERROR(["종료 · 오류 전달"])
-    PREPARE --> CALL[["FileUtility.CopyExistingFilesFromManifestAsync()<br/>③ 참고"]]
-    PREPARE -->|오류| CLEAN["임시 영역 정리·원인 보존"]
-    PREPARE -->|사용자 취소| CLEAN
-    CALL -->|정상| DONE(["반환 · 임시 사본 유지"])
-    CALL -->|오류| CLEAN
-    CALL -->|사용자 취소| CLEAN
-    CLEAN -->|공통 정리| RESULT{"보관한 원인은?"}
-    RESULT -->|오류| ERROR
-    RESULT -->|사용자 취소| CANCEL(["종료 · 취소 전달"])
-    classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
-    classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class START,ERROR,DONE,RESULT,CANCEL low
-    class CHECK,PREPARE,CLEAN medium
-    class CALL high
-    linkStyle default stroke:#16A34A,stroke-width:2px
-    linkStyle 2,4,7,10 stroke:#DC2626,stroke-width:2px
-    linkStyle 5,8,11 stroke:#EAB308,stroke-width:3px
-    linkStyle 9 stroke:#64748B,stroke-width:2px
+```json
+{"id":"peak","type":"text","x":800,"y":0,"width":650,"height":240,"color":"1","text":"### 델타 적용\n시간 0.976초 | 최대 전용 29.07MB","styleAttributes":{"memoryPeak":"observed"}}
 ```
 
-### ③ FileUtility.cs · CopyExistingFilesFromManifestAsync
+제공된 CSS를 활성화하면 첫 노드는 기존 노랑색 10px 테두리, 두 번째는 기존 빨간 배경과 테두리에 빨간 외곽 광택을 추가한다. 마름모나 캡슐이면 기존 `shape`도 그대로 둔다.
 
-전제: ②가 목적지와 명세를 준비했다. 누락은 정상 건너뛰기이며 접근 오류를 누락으로 취급하지 않는다. 출력 파일 삭제는 ②의 책임이고 이 함수는 열린 스트림을 정리한 후 반환/예외를 전달한다.
-
-```mermaid
----
-config:
-  htmlLabels: false
-  markdownAutoWrap: false
-  flowchart:
-    wrappingWidth: 900
----
-flowchart TD
-    START(["시작 · CopyExistingFilesFromManifestAsync"]) --> NEXT{"다음 명세 파일이 있는가?"}
-    NEXT -->|없음| DONE(["반환 · 복사 완료"])
-    NEXT -->|있음| OPEN["취소 확인·경로 검사·원본 열기"]
-    OPEN -->|파일 누락 · 허용| NEXT
-    OPEN -->|파일 존재| COPY["출력 파일 생성·스트림 복사"]
-    OPEN -->|경로·권한·공유 오류| ERROR(["종료 · 자원 정리 후 오류 전달"])
-    OPEN -->|사용자 취소| CANCEL(["종료 · 자원 정리 후 취소 전달"])
-    COPY -->|성공 · 스트림 닫기| NEXT
-    COPY -->|읽기·쓰기 오류| ERROR
-    COPY -->|사용자 취소| CANCEL
-    classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class START,NEXT,DONE,OPEN,ERROR,CANCEL low
-    class COPY high
-    linkStyle default stroke:#16A34A,stroke-width:2px
-    linkStyle 5,8 stroke:#DC2626,stroke-width:2px
-    linkStyle 6,9 stroke:#EAB308,stroke-width:3px
-```
-
-③의 반환·오류·취소는 ②의 호출 노드 출력과, ②의 출력은 ①의 호출 노드 출력과 대응한다. 부모 그림에 자식의 파일 순회나 복사 로직을 다시 펼치지 않는다.
-
-## 5. 전체 선언부와 파라미터 개행 — 큰 덩어리
-
-파라미터의 타입·이름·기본값은 한 줄이다. 예를 들어 `CancellationToken<br/>cancellationToken = default`로 나누지 않고 `CancellationToken cancellationToken = default`로 표시한다. 아래 예시는 최상위 `htmlLabels: false`, `markdownAutoWrap: false`, `flowchart.wrappingWidth: 900` 설정과 일반 공백을 사용한다.
-
-아래는 표현용 가상 선언이다. 실제 프로젝트의 구현이나 확정된 함수 구성을 뜻하지 않는다. 전체 함수를 바깥 영역으로 감싸고 선언부는 시작 노드에 넣는다. 보조 호출은 이중선 노드로 표시한다. 파라미터는 한 줄에 하나씩, 닫는 괄호는 별도 줄로 표시한다. 접근 제한자를 쓰므로 접근 기호는 중복하지 않는다. 정상 흐름만 보여주며 오류·취소는 생략했다.
-
-```mermaid
----
-config:
-  htmlLabels: false
-  markdownAutoWrap: false
-  flowchart:
-    wrappingWidth: 900
----
-flowchart TD
-    subgraph MAIN["[예시] Patcher.PrepareLatestAsync"]
-        START(["시작<br/>[예시] Patcher<br/>internal static async Task PrepareLatestAsync(<br/>　string directoryPath,<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"])
-        FETCH[["[예시] Patcher<br/>private static async Task&lt;ReleaseManifest&gt; GetLatestReleaseAsync(<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)<br/>최신 목표 명세 조회·고정"]]
-        PREPARE[["[예시] Patcher<br/>private static async Task PrepareFilesAsync(<br/>　string directoryPath,<br/>　ReleaseManifest manifest,<br/>　CancellationToken cancellationToken<br/>)<br/>필요한 목표 파일 준비"]]
-        DONE(["반환 · 준비 완료"])
-        START --> FETCH
-        FETCH --> PREPARE
-        PREPARE --> DONE
-    end
-    classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
-    classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class START,DONE low
-    class FETCH medium
-    class PREPARE high
-    linkStyle default stroke:#16A34A,stroke-width:2px
-```
-
-## 6. 바깥 함수 영역 안에 여러 내부 함수 영역
-
-예시 5의 두 호출을 영역으로 펼친다. 선언부만을 위한 실행 노드는 만들지 않는다. 영역 제목은 짧은 함수명으로 표시하고, 전체 함수와 보조 함수 선언은 각각의 시작 노드에 표시한다. `title`의 줄바꿈에 의존하지 않고 `<br/>`를 사용한다.
-
-설명용 순차 파일 준비이며 보존·델타 정책은 생략했다. 파일 교체·설치 기록 저장도 범위 밖이다. 정상은 초록, 오류는 빨강, 사용자 취소는 노랑, 공통 정리는 회색 선이다. 영역에서 정리로 향하는 선은 해당 함수 전체에 적용된다.
-
-```mermaid
----
-config:
-  htmlLabels: false
-  markdownAutoWrap: false
-  flowchart:
-    wrappingWidth: 900
----
-flowchart TD
-    subgraph MAIN["[예시] Patcher.PrepareLatestAsync"]
-        START(["시작<br/>[예시] Patcher<br/>internal static async Task PrepareLatestAsync(<br/>　string directoryPath,<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"])
-        subgraph FETCH["Patcher.GetLatestReleaseAsync"]
-            FETCH_START(["시작<br/>[예시] Patcher<br/>private static async Task&lt;ReleaseManifest&gt; GetLatestReleaseAsync(<br/>　Uri serverRoot,<br/>　CancellationToken cancellationToken<br/>)"])
-            FETCH_START --> A
-            A["서버 인덱스 조회"]
-            B["최신 명세 조회·검사 및 목표 고정"]
-            A --> B
-        end
-        subgraph PREPARE["Patcher.PrepareFilesAsync"]
-            PREPARE_START(["시작<br/>[예시] Patcher<br/>private static async Task PrepareFilesAsync(<br/>　string directoryPath,<br/>　ReleaseManifest manifest,<br/>　CancellationToken cancellationToken<br/>)"])
-            PREPARE_START --> C
-            C{"준비할 다음 파일이 있는가?"}
-            D["임시 위치로 다운로드"]
-            E["크기·해시 검증"]
-            C -->|있음| D
-            D --> E
-            E --> C
-        end
-        CLEAN["작업 종료·스트림 해제 후<br/>실패 시 임시 자료 정리"]
-        RESULT{"보관한 처리 결과"}
-        DONE(["반환 · 준비 완료"])
-        ERROR(["종료 · 오류 전달"])
-        CANCEL(["종료 · 취소 전달"])
-        START --> FETCH_START
-        B --> PREPARE_START
-        C -->|없음| CLEAN
-        FETCH -->|오류| CLEAN
-        PREPARE -->|오류| CLEAN
-        FETCH -->|사용자 취소| CLEAN
-        PREPARE -->|사용자 취소| CLEAN
-        CLEAN -->|공통 정리| RESULT
-        RESULT -->|성공| DONE
-        RESULT -->|오류| ERROR
-        RESULT -->|사용자 취소| CANCEL
-    end
-    classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
-    classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class START,FETCH_START,PREPARE_START,C,RESULT,DONE,ERROR,CANCEL low
-    class A,B,CLEAN medium
-    class D,E high
-    linkStyle default stroke:#16A34A,stroke-width:2px
-    linkStyle 9,10,15 stroke:#DC2626,stroke-width:2px
-    linkStyle 11,12,16 stroke:#EAB308,stroke-width:3px
-    linkStyle 13 stroke:#64748B,stroke-width:2px
-```
-
-함수 영역은 중립적인 외곽선으로 두고 내부 노드에만 비용색을 적용한다. 바깥 함수 영역을 포함한 두 단계 구조는 선언부의 개행과 함수 소속을 표현하기 위한 것이며 임의의 제품 함수 분리를 의미하지 않는다.
-
-## 병렬 시작·합류
-
-개념 예시다. 실선은 실행 시작·종료 관계이며 모든 내부 흐름을 함께 시작한다. 노드의 초록·노랑·빨강은 상대 처리비용이다. 외부 실선은 내부 노드 대신 PARALLEL 영역에 연결한다.
-
-```mermaid
----
-config:
-  htmlLabels: false
-  markdownAutoWrap: false
-  flowchart:
-    wrappingWidth: 900
----
-flowchart TD
-    START(["시작"])
-    FORK["두 병렬 흐름 함께 시작"]
-    subgraph PARALLEL["병렬 처리"]
-        direction LR
-        subgraph FIRST["① 첫 번째 흐름"]
-            A["독립 자료 처리"]
-        end
-        subgraph SECOND["② 두 번째 흐름"]
-            B["다른 자료 처리"]
-        end
-    end
-    JOIN["두 흐름 모두 완료·종료 대기"]
-    END(["종료"])
-    START --> FORK
-    FORK --> PARALLEL
-    PARALLEL --> JOIN
-    JOIN --> END
-    style PARALLEL fill:#111827,stroke:#64748B,stroke-width:2px,color:#FFFFFF
-    style FIRST fill:#172554,stroke:#60A5FA,stroke-width:3px,color:#FFFFFF
-    style SECOND fill:#172554,stroke:#60A5FA,stroke-width:3px,color:#FFFFFF
-    classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
-    class START,FORK,JOIN,END low
-    class A,B medium
-    linkStyle default stroke:#16A34A,stroke-width:2px
-```
-
-## 병렬 파이프라인의 작업 전달
-
-계획된 패처를 간략화한 개념 예시다. Pipeline(파이프라인)은 처리 결과를 다음 단계로 전달하는 구조다. 각 영역은 독립적인 흐름이며 스레드 하나를 뜻하지 않는다. 실선은 실행 시작·종료, 점선은 대기열을 통한 작업 전달이다. 노드 색은 상대 처리비용, 선의 초록은 정상, 빨강은 실패에 따른 수리 요청이다.
-
-```mermaid
----
-config:
-  htmlLabels: false
-  markdownAutoWrap: false
-  flowchart:
-    wrappingWidth: 900
----
-flowchart TD
-    START(["시작"])
-    PREP["명세 조회·파일 계획·삭제<br/>초기 요청 등록"]
-    FORK["세 병렬 흐름 함께 시작"]
-    subgraph PARALLEL["병렬 처리"]
-        direction LR
-        subgraph DOWNLOAD["① 다운로드"]
-            D["요청 선택·비용 판단<br/>다운로드·자료 재사용"]
-        end
-        subgraph APPLY["② 델타 적용"]
-            A["델타 적용<br/>완료 결과 공개"]
-        end
-        subgraph VERIFY["③ 최종 검증"]
-            V["목표 크기·해시 검사<br/>교체·파일 완료"]
-        end
-        D -.->|델타 자료| A
-        A -.->|목표 도달| V
-        D -.->|전체 파일 자료| V
-        A -.->|적용 완료 후 다음 델타 요청| D
-        A -.->|적용 실패 · 수리 요청| D
-        V -.->|검증 실패 · 수리 요청| D
-    end
-    JOIN["모든 대상 파일 완료<br/>작업자 종료 요청·종료 대기"]
-    END(["정리 · 목표 명세 반환"])
-    START --> PREP
-    PREP --> FORK
-    FORK --> PARALLEL
-    PARALLEL --> JOIN
-    JOIN --> END
-    style PARALLEL fill:#111827,stroke:#64748B,stroke-width:2px,color:#FFFFFF
-    style DOWNLOAD fill:#172554,stroke:#60A5FA,stroke-width:3px,color:#FFFFFF
-    style APPLY fill:#172554,stroke:#60A5FA,stroke-width:3px,color:#FFFFFF
-    style VERIFY fill:#172554,stroke:#60A5FA,stroke-width:3px,color:#FFFFFF
-    classDef low fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef medium fill:#fef9c3,stroke:#ca8a04,color:#713f12
-    classDef high fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class START,FORK,JOIN,END low
-    class PREP medium
-    class D,A,V high
-    linkStyle default stroke:#16A34A,stroke-width:2px
-    linkStyle 4,5 stroke:#DC2626,stroke-width:2px
-```
-
-대기열이 잠시 비어도 다른 흐름에서 후속 요청이 올 수 있으므로 종료하지 않는다. 전체 완료는 모든 대상 파일 처리와 작업자 종료를 포함한다. 취소·재시도·복구 상세는 생략했으며 실제 대상 알고리즘에 맞춰 별도 상세 그림에서 펼친다. 내부 왕복 점선도 자동 배치에 영향을 주므로 같은 높이의 고정 배치를 보장하지 않는다.
+병렬 그룹은 `label`에 `1.088초 | 최대 전용 29.07MB`만 표시하고 `memoryPeak` 속성은 넣지 않는다. 같은 값이 찍혔다고 그룹까지 붉게 빛나게 하지 않는다. 범례에는 “빨간 광택은 해당 대표 회차에서 프로세스 최대 전용 메모리가 관측된 개별 노드, 10px 테두리는 이번 변경”이라고 적는다. 수치는 가상 예시다.

@@ -1,0 +1,45 @@
+/* @advanced-canvas-node-style
+key: memoryPeak
+label: 메모리 피크
+nodeTypes:
+  - text
+options:
+  - icon: circle-off
+    label: 강조 없음
+    value: null
+  - icon: memory-stick
+    label: 최대 전용 메모리 관측
+    value: observed
+*/
+
+/* Group labels may show the peak value; groups must never glow. */
+.canvas-node:not(.canvas-node-group)[data-memory-peak="observed"] {
+  --peak-glow-scale: clamp(1, var(--zoom-multiplier, 1), 4);
+  filter:
+    drop-shadow(0 0 calc(5px * var(--peak-glow-scale)) rgba(252, 165, 165, 1))
+    drop-shadow(0 0 calc(18px * var(--peak-glow-scale)) rgba(239, 68, 68, 0.95))
+    drop-shadow(0 0 calc(42px * var(--peak-glow-scale)) rgba(239, 68, 68, 0.7));
+}
+
+/* @advanced-canvas-node-style
+key: revisionEmphasis
+label: 이번 변경
+options:
+  - icon: circle-off
+    label: 기본 테두리
+    value: null
+  - icon: square
+    label: 변경 노드 10px
+    value: current
+*/
+
+.canvas-node[data-revision-emphasis="current"] {
+  --border-width: 10px !important;
+  --canvas-node-border-width: 10px !important;
+}
+
+/* Shape-specific outlines use --border-width. A rectangular border would
+   change their silhouettes, so only ordinary containers receive this rule. */
+.canvas-node[data-revision-emphasis="current"]:not([data-shape="diamond"]):not([data-shape="document"]):not([data-shape="database"]):not([data-shape="predefined-process"]) > .canvas-node-container {
+  border-width: 10px !important;
+}
