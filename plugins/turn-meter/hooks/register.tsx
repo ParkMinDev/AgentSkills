@@ -22,15 +22,15 @@ export const CONFIG = {
   maxAdvice: 4, // advisor 최대 줄 수
   cacheHitDropPt: 0.3, // C2: 캐시적중이 평소보다 30%p 이상 하락
   growthRatio: 3, // C3: 대화 증가량이 평소의 3배 이상
-  growthMin: 10_000, //     그리고 최소 +10k
+  growthMin: 10_000, //     그리고 최소 +1만
   inputRatio: 2, // C4: 입력 총량이 평소의 2배 이상
-  inputMin: 50_000, //     그리고 최소 50k
+  inputMin: 50_000, //     그리고 최소 5만
   requestRatio: 2, // C5: 요청 횟수가 평소의 2배 이상
   requestMinExtra: 5, //     그리고 평소보다 최소 +5회
   outputRatio: 3, // C6: 출력이 평소의 3배 이상
-  outputMin: 2_000, //     그리고 최소 2k
+  outputMin: 2_000, //     그리고 최소 2,000
   agentTokenRatio: 2, // C7: 서브에이전트 토큰이 평소의 2배 이상
-  agentTokenMin: 10_000, //     그리고 최소 10k
+  agentTokenMin: 10_000, //     그리고 최소 1만
 }
 
 // ── 한 턴의 측정값 ──────────────────────────────────────────────
@@ -66,29 +66,31 @@ export type TurnFacts = TurnRecord & {
   prevOutput?: number // 직전 턴의 출력
 }
 
-// 직전 턴 대비 증감률: ", +4%" / ", -62%" / ", ±0%". 직전 값이 없거나 0이면 생략.
+// 직전 턴 대비 변동: "변동 +8.3만, +208%" / "변동 -170, -62%" / "변동 +0, ±0%". 직전 값이 없거나 0이면 ''.
 export const changeVsPrev = (cur: number, prev?: number): string => {
   if (prev === undefined || prev <= 0) return ''
   const p = Math.round(((cur - prev) / prev) * 100)
-  return `, ${p > 0 ? '+' : p < 0 ? '-' : '±'}${Math.abs(p)}%`
+  return `변동 ${signed(cur - prev)}, ${p > 0 ? '+' : p < 0 ? '-' : '±'}${Math.abs(p)}%`
 }
 
 // ── 숫자 표시 ──────────────────────────────────────────────────
+// 한국 단위: 1만 미만은 쉼표(9,500), 1만 이상은 만(4.6만, 120만), 1억 이상은 억(1.5억)
+const comma = (n: number): string => `${Math.round(n)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+const oneDecimal = (n: number): string => n.toFixed(1).replace(/\.0$/, '')
 export const tok = (n: number): string => {
   const a = Math.abs(n)
-  if (a < 1000) return `${Math.round(n)}`
-  if (a < 10_000) return `${(n / 1000).toFixed(1).replace(/\.0$/, '')}k`
-  if (a < 1_000_000) return `${Math.round(n / 1000)}k`
-  return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`
+  if (a < 10_000) return comma(n)
+  if (Math.abs(Number((n / 10_000).toFixed(1))) < 10_000) return `${oneDecimal(n / 10_000)}만`
+  return `${oneDecimal(n / 100_000_000)}억`
 }
 const signed = (n: number): string => (n >= 0 ? `+${tok(n)}` : `-${tok(-n)}`)
 const pct = (r: number): string => `${Math.round(r * 100)}%`
 export const dur = (ms: number): string => {
   const s = Math.round(ms / 1000)
-  if (s < 60) return `${s}s`
+  if (s < 60) return `${s}초`
   const m = Math.floor(s / 60)
-  if (m < 60) return `${m}m`
-  return `${Math.floor(m / 60)}h ${m % 60}m`
+  if (m < 60) return `${m}분`
+  return `${Math.floor(m / 60)}시간 ${m % 60}분`
 }
 
 const median = (xs: number[]): number => {
@@ -97,19 +99,29 @@ const median = (xs: number[]): number => {
   return s.length % 2 ? s[mid]! : (s[mid - 1]! + s[mid]!) / 2
 }
 
-// ── 첫 줄 ──────────────────────────────────────────────────────
-export const summaryLine = (f: TurnFacts): string => {
-  const inner = [`캐시적중 ${pct(f.hit)}`]
-  if (f.delta !== undefined) inner.push(`변동 ${signed(f.delta)}`)
-  const parts = [
-    `입력 ${tok(f.input)}${changeVsPrev(f.input, f.prevInput)} (${inner.join(', ')})`,
-    `출력 ${tok(f.output)}${changeVsPrev(f.output, f.prevOutput)}`,
+// ── 요약 4줄: 입력 / 출력 / 입출력 / 시간·횟수 ─────────────────────
+const withParens = (head: string, inner: string[]): string => {
+  const xs = inner.filter(s => s !== '')
+  return xs.length ? `${head} (${xs.join(', ')})` : head
+}
+export const summaryLines = (f: TurnFacts): string[] => {
+  const prevTotal =
+    f.prevInput !== undefined && f.prevOutput !== undefined ? f.prevInput + f.prevOutput : undefined
+  const last: string[] = []
+  if (f.idleMs !== undefined) last.push(`마지막응답으로부터 ${dur(f.idleMs)}`)
+  last.push(`응답 소요시간 ${dur(f.durationMs)}`)
+  if (f.agents > 0) last.push(`서브에이전트 ${f.agents}개`)
+  if (f.compactCount > 0) last.push(`컴팩트횟수 ${f.compactCount}`)
+  return [
+    withParens(`입력 ${tok(f.input)}`, [
+      `읽기 횟수 ${f.requests}`,
+      `캐시적중 ${pct(f.hit)}`,
+      changeVsPrev(f.input, f.prevInput),
+    ]),
+    withParens(`출력 ${tok(f.output)}`, [changeVsPrev(f.output, f.prevOutput)]),
+    withParens(`입출력 ${tok(f.input + f.output)}`, [changeVsPrev(f.input + f.output, prevTotal)]),
+    last.join(' · '),
   ]
-  if (f.idleMs !== undefined) parts.push(`마지막응답으로부터 ${dur(f.idleMs)}`)
-  parts.push(`응답 소요시간 ${dur(f.durationMs)}`)
-  if (f.agents > 0) parts.push(`서브에이전트 ${f.agents}개`)
-  if (f.compactCount > 0) parts.push(`컴팩트횟수 ${f.compactCount}`)
-  return parts.join(' · ')
 }
 
 // ── advisor: 평소 값 대비 변동 감지 ─────────────────────────────
@@ -308,7 +320,7 @@ export const register: Register = on => {
     }
 
     // 첫 턴에는 캐시가 원래 비어 있으므로 C2용 기록은 두 번째 턴부터 의미가 있다.
-    const lines = [summaryLine(facts), ...adviceLines(facts, history)]
+    const lines = [...summaryLines(facts), ...adviceLines(facts, history)]
 
     // 다음 턴을 위해 갱신
     history.push(record)

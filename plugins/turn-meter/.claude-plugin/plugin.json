@@ -1,6 +1,6 @@
 {
   "name": "turn-meter",
-  "version": "0.4.1",
-  "description": "응답 아래에 이번 턴의 토큰 사용량과, 평소 대비 변동을 감지한 advisor 줄을 붙입니다 (모델 호출 없음).",
+  "version": "0.5.0",
+  "description": "?묐떟 ?꾨옒???대쾲 ?댁쓽 ?좏겙 ?ъ슜?됯낵, ?됱냼 ?鍮?蹂?숈쓣 媛먯???advisor 以꾩쓣 遺숈엯?덈떎 (紐⑤뜽 ?몄텧 ?놁쓬).",
   "types": "./types/index.d.ts"
 }
