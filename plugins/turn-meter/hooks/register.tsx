@@ -100,10 +100,9 @@ const median = (xs: number[]): number => {
 }
 
 // ── 요약 4줄: 입력 / 출력 / 입출력 / 시간·횟수 ─────────────────────
-const withParens = (head: string, inner: string[]): string => {
-  const xs = inner.filter(s => s !== '')
-  return xs.length ? `${head} (${xs.join(', ')})` : head
-}
+// 괄호 묶음마다 빈 항목을 빼고, 빈 묶음은 괄호째 생략한다.
+const withGroups = (head: string, groups: string[][]): string =>
+  [head, ...groups.map(g => g.filter(s => s !== '')).filter(g => g.length).map(g => `(${g.join(', ')})`)].join(' ')
 export const summaryLines = (f: TurnFacts): string[] => {
   const prevTotal =
     f.prevInput !== undefined && f.prevOutput !== undefined ? f.prevInput + f.prevOutput : undefined
@@ -113,13 +112,13 @@ export const summaryLines = (f: TurnFacts): string[] => {
   if (f.agents > 0) last.push(`서브에이전트 ${f.agents}개`)
   if (f.compactCount > 0) last.push(`컴팩트횟수 ${f.compactCount}`)
   return [
-    withParens(`입력 ${tok(f.input)}`, [
-      `읽기 횟수 ${f.requests}`,
-      `캐시적중 ${pct(f.hit)}`,
-      changeVsPrev(f.input, f.prevInput),
+    withGroups(`입력 ${tok(f.input)}`, [
+      [changeVsPrev(f.input, f.prevInput)],
+      [f.delta !== undefined ? `대화 ${signed(f.delta)}` : '', `읽기 횟수 ${f.requests}`],
+      [`캐시적중 ${pct(f.hit)}`],
     ]),
-    withParens(`출력 ${tok(f.output)}`, [changeVsPrev(f.output, f.prevOutput)]),
-    withParens(`입출력 ${tok(f.input + f.output)}`, [changeVsPrev(f.input + f.output, prevTotal)]),
+    withGroups(`출력 ${tok(f.output)}`, [[changeVsPrev(f.output, f.prevOutput)]]),
+    withGroups(`입출력 ${tok(f.input + f.output)}`, [[changeVsPrev(f.input + f.output, prevTotal)]]),
     last.join(' · '),
   ]
 }
