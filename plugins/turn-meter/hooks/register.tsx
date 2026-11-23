@@ -107,10 +107,10 @@ export const summaryLines = (f: TurnFacts): string[] => {
   const prevTotal =
     f.prevInput !== undefined && f.prevOutput !== undefined ? f.prevInput + f.prevOutput : undefined
   const last: string[] = []
-  if (f.idleMs !== undefined) last.push(`마지막응답으로부터 ${dur(f.idleMs)}`)
   last.push(`응답 소요시간 ${dur(f.durationMs)}`)
-  if (f.agents > 0) last.push(`서브에이전트 ${f.agents}개`)
+  if (f.idleMs !== undefined) last.push(`마지막응답으로부터 ${dur(f.idleMs)}`)
   if (f.compactCount > 0) last.push(`컴팩트횟수 ${f.compactCount}`)
+  if (f.agents > 0) last.push(`서브에이전트 ${f.agents}개`)
   return [
     withGroups(`입력 ${tok(f.input)}`, [
       [changeVsPrev(f.input, f.prevInput)],
