@@ -2,17 +2,16 @@
 
 ## 경로와 하나의 원본
 
-프로젝트 루트가 보관소인 경우와 `Work`만 보관소인 경우는 내부 링크 경로가 다르다. 디스크 경로와 보관소 안 경로를 구분한다.
+보관소는 프로젝트 루트의 `<프로젝트명>.DevDocs/` 폴더다(AGENTS.md의 개발 문서 보관소 규칙). 디스크 경로와 보관소 안 경로를 구분하고, 링크는 보관소 루트 기준으로 쓴다.
 
-- 디스크: `<프로젝트>/Work/flowchart/Launcher.AppUpdater_.ExecuteCoreAsync 순서도.canvas`
-- `Work` 보관소에서 포함: `![[flowchart/Launcher.AppUpdater_.ExecuteCoreAsync 순서도.canvas]]`
-- 프로젝트 전체 보관소에서 포함: `![[Work/flowchart/Launcher.AppUpdater_.ExecuteCoreAsync 순서도.canvas]]`
+- 디스크: `<프로젝트>/<프로젝트명>.DevDocs/flowchart/Launcher.AppUpdater_.ExecuteCoreAsync 순서도.canvas`
+- 보관소에서 포함: `![[flowchart/Launcher.AppUpdater_.ExecuteCoreAsync 순서도.canvas]]`
 
 여러 진입점이 공유하는 대표 그림은 기존 `런처 순서도.canvas` 하나를 갱신한다. 측정값을 추가해도 별도 측정 순서도를 자동으로 만들지 않는다. 문서에는 그림을 재작성하지 않고 같은 Canvas를 포함한다.
 
 ## 설명 문서 예시
 
-아래는 `Work`가 보관소인 경우다. Obsidian이 파일명을 제목으로 표시하면 본문 첫 줄에 같은 제목을 반복하지 않는다. 다른 도구용 문서나 사용자가 제목을 지정한 문서는 그 요구를 따른다.
+아래 링크는 `.DevDocs` 보관소 루트 기준이다. Obsidian이 파일명을 제목으로 표시하면 본문 첫 줄에 같은 제목을 반복하지 않는다. 다른 도구용 문서나 사용자가 제목을 지정한 문서는 그 요구를 따른다.
 
 ```markdown
 ![[analysis/성능 측정.base#전체 비교]]
