@@ -1,4 +1,4 @@
-import { atom, read, update } from 'claude-code'
+import { atom, read } from 'claude-code'
 import type { Register } from 'claude-code'
 
 import type { Notes } from '../types'
@@ -9,7 +9,37 @@ const notesAtom = atom({ plugin: 'turn-meter', key: 'notes' } as const, {} as No
 const MAX_NOTES = 200
 
 // 화면의 응답 블록 텍스트와 turn.complete의 answer를 맞추는 키.
-export const keyOf = (text: string): string => text.replace(/\s+/g, ' ').trim().slice(-300)
+const KEY_LEN = 300
+const normKey = (text: string): string => text.replace(/\s+/g, ' ').trim()
+// 전체 정규화 대신 끝부분만 정규화한다. 끝부분을 정규화한 결과는 전체를 정규화한 결과의
+// 접미사이므로, 그 길이가 KEY_LEN 이상이면 마지막 KEY_LEN자는 전체 계산과 같다 (이전 키와 호환).
+// 정규식 \s와 같은 집합 (String.prototype.trim이 지우는 문자와도 같다).
+const isWs = (c: number): boolean =>
+  c === 32 ||
+  (c >= 9 && c <= 13) ||
+  (c >= 0x80 &&
+    (c === 0xa0 ||
+      c === 0x1680 ||
+      (c >= 0x2000 && c <= 0x200a) ||
+      c === 0x2028 ||
+      c === 0x2029 ||
+      c === 0x202f ||
+      c === 0x205f ||
+      c === 0x3000 ||
+      c === 0xfeff))
+export const keyOf = (text: string): string => {
+  // 끝에서부터 정규화 후 글자 수를 세어, KEY_LEN+1자를 넘는 지점까지만 잘라 정규화한다.
+  let i = text.length
+  while (i > 0 && isWs(text.charCodeAt(i - 1))) i-- // 끝 공백은 trim으로 사라지므로 세지 않는다
+  let n = 0
+  while (i > 0 && n <= KEY_LEN) {
+    if (isWs(text.charCodeAt(i - 1))) {
+      while (i > 0 && isWs(text.charCodeAt(i - 1))) i--
+    } else i--
+    n++
+  }
+  return normKey(i === 0 ? text : text.slice(i)).slice(-KEY_LEN)
+}
 
 // turn-meter: 응답 아래에 이번 턴 사용량 한 줄과, 이 세션의 평소 값 대비
 // 변동을 감지한 advisor 줄을 붙인다. 모두 엔진이 이미 가진 숫자로 계산하고
@@ -240,6 +270,17 @@ export const register: Register = on => {
   let compactBefore: number | undefined
   let compactAfter: number | undefined
 
+  // notes의 메모리 사본 (키 → 미리 나눈 줄). 모듈 변수라 리로드 때 비고,
+  // 그때 한 번만 atom을 읽어 다시 채운다. atom은 리로드 뒤를 위해 계속 저장한다.
+  const mirror = new Map<string, readonly string[]>()
+  let loaded = false
+  // 이미 사본에 있는 키(이번 copy가 쓴 최신 값)는 덮지 않는다.
+  const fill = (notes: Notes): void => {
+    if (loaded) return
+    for (const [k, v] of Object.entries(notes)) if (!mirror.has(k)) mirror.set(k, v.split('\n'))
+    loaded = true
+  }
+
   on('turn.start', async ($, e, next) => {
     if (e.agentId === undefined && turnStartAt === undefined) {
       turnStartAt = await $.clock.now()
@@ -336,13 +377,21 @@ export const register: Register = on => {
 
     const key = keyOf(e.answer)
     if (key !== '') {
-      const note = lines.join('\n')
-      await update($, notesAtom, prev => {
-        const merged: Notes = { ...prev, [key]: note }
-        const keys = Object.keys(merged)
-        for (const k of keys.slice(0, Math.max(0, keys.length - MAX_NOTES))) delete merged[k]
-        return merged
-      })
+      if (!loaded) fill(await read($, notesAtom))
+      // 기존 키는 자리를 지키고(객체 병합과 같은 순서), 새 키는 끝에 붙는다. 오래된 것부터 지운다.
+      mirror.set(key, lines)
+      if (mirror.size > MAX_NOTES) {
+        let drop = mirror.size - MAX_NOTES
+        for (const k of mirror.keys()) {
+          if (drop-- <= 0) break
+          mirror.delete(k)
+        }
+      }
+      const notes: Notes = {}
+      for (const [k, v] of mirror) notes[k] = v.join('\n')
+      await $.state.set({ plugin: 'turn-meter', key: 'notes' } as const, notes)
+      // 렌더 훅이 atom을 읽지 않아 구독이 없으므로, 응답들을 직접 다시 그린다.
+      $.ui.invalidate('ui.render')
     }
     // 접히는 메모로 붙이지 않고, 아래 ui.render에서 응답 본문 밑에 직접 그린다.
     return r
@@ -350,15 +399,16 @@ export const register: Register = on => {
 
   // 응답의 마지막 블록 밑에 meter 줄을 흐리게 그린다 (항상 펼쳐진 상태).
   on('ui.render', { component: 'AssistantMessage' }, async ($, e, next) => {
-    const notes = await read($, notesAtom)
-    const note = notes[keyOf(e.props.text)]
+    if (!loaded) fill(await read($, notesAtom))
+    if (mirror.size === 0) return next(e)
+    const note = mirror.get(keyOf(e.props.text))
     if (note === undefined) return next(e)
 
     const { Box, Text } = $.ui.resolve(e)
     return (
       <Box flexDirection="column">
         {await next(e)}
-        {note.split('\n').map((line, i) => (
+        {note.map((line, i) => (
           <Text key={`m${i}`} dimColor>
             {line}
           </Text>
