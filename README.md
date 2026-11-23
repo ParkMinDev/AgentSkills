@@ -1,6 +1,31 @@
-# AgentSkills
+# AI-AgentKit
 
-개인 AI 코딩 에이전트 스킬과 공통 작업 지침을 관리하는 독립 저장소입니다. 저장소의 파일을 원본으로 관리하며, 도구별 개인 스킬 폴더에는 복사하여 설치합니다.
+개인 AI 코딩 에이전트(Codex·Claude Code)의 공통 작업 지침, 스킬, 플러그인을 관리하는 저장소입니다. 저장소의 파일을 원본으로 관리합니다.
+
+## 구성
+
+| 경로 | 내용 |
+| --- | --- |
+| `config/AGENTS.md` | Codex·Claude Code 공통 작업 지침 원본 |
+| `skills/` | 공용 스킬 (Codex는 복사 설치, Claude Code는 `agent-skills` 플러그인) |
+| `plugins/turn-meter/` | Claude Code 모드: 응답 밑에 턴별 토큰 사용량 표시 |
+| `.claude-plugin/` | Claude Code 로컬 마켓플레이스 `ai-agentkit` (`agent-skills`, `turn-meter`) |
+
+## Claude Code 설치 및 갱신
+
+저장소 루트에서 실행합니다.
+
+```powershell
+claude plugin marketplace add .
+claude plugin install agent-skills@ai-agentkit
+claude plugin install turn-meter@ai-agentkit
+```
+
+플러그인은 저장소 폴더를 직접 읽으므로 `git pull` 후 새 세션부터 반영됩니다. 공통 지침은 `~/.claude/CLAUDE.md`에 아래 한 줄을 두어 불러옵니다(경로는 PC에 맞게 수정).
+
+```
+@D:/WorkSpace/ParkMinDev/Solutions/AI-AgentKit/config/AGENTS.md
+```
 
 ## 스킬 목록
 
@@ -39,7 +64,7 @@ Get-ChildItem -LiteralPath './skills' -Directory | ForEach-Object {
 
 ## Codex 공통 작업 지침 설치 및 갱신
 
-[config/codex/AGENTS.md](config/codex/AGENTS.md)는 개인 Codex 공통 작업 지침의 저장소 원본입니다. 실제 적용 파일은 `$CODEX_HOME/AGENTS.md`이며, CODEX_HOME을 지정하지 않은 환경에서는 사용자 폴더의 `.codex/AGENTS.md`를 사용합니다. 저장소 루트에 두지 않아 AgentSkills 저장소 자체의 지침과 구분합니다.
+[config/AGENTS.md](config/AGENTS.md)는 개인 Codex 공통 작업 지침의 저장소 원본입니다. 실제 적용 파일은 `$CODEX_HOME/AGENTS.md`이며, CODEX_HOME을 지정하지 않은 환경에서는 사용자 폴더의 `.codex/AGENTS.md`를 사용합니다. 저장소 루트에 두지 않아 AI-AgentKit 저장소 자체의 지침과 구분합니다.
 
 저장소 루트에서 다음 PowerShell 명령을 실행하면 기존 적용 파일을 별도 이름으로 백업한 뒤 복사합니다. 기존 내용과 자동 병합하지 않으므로 개인 수정이 있다면 먼저 비교해 원본에 반영하세요.
 
@@ -51,12 +76,12 @@ if (Test-Path -LiteralPath $instructionsPath) {
     $backupPath = Join-Path $codexConfigRoot ('AGENTS.md.' + [Guid]::NewGuid().ToString('N') + '.backup')
     Copy-Item -LiteralPath $instructionsPath -Destination $backupPath -ErrorAction Stop
 }
-Copy-Item -LiteralPath './config/codex/AGENTS.md' -Destination $instructionsPath -Force -ErrorAction Stop
+Copy-Item -LiteralPath './config/AGENTS.md' -Destination $instructionsPath -Force -ErrorAction Stop
 ```
 
 갱신 순서:
 
-1. 저장소에서 `config/codex/AGENTS.md`를 수정하거나 `git pull --ff-only`로 최신 내용을 받습니다. 로컬 변경이 있다면 먼저 보존·정리합니다.
+1. 저장소에서 `config/AGENTS.md`를 수정하거나 `git pull --ff-only`로 최신 내용을 받습니다. 로컬 변경이 있다면 먼저 보존·정리합니다.
 2. 위 복사 명령으로 적용 파일을 갱신합니다. 적용본에서 먼저 수정했다면 차이를 검토한 뒤 저장소 원본에도 반영합니다.
 3. 다른 PC에서는 문서에 기록된 Unity CLI 절대 경로를 실제 설치 위치에 맞춥니다. 현재 원본에는 작성자 PC의 경로가 포함되어 있습니다.
 
@@ -81,7 +106,7 @@ Copy-Item -LiteralPath './config/codex/AGENTS.md' -Destination $instructionsPath
 
 텍스트 트리를 명시하면 클래스 구조도 `text-tree`를 우선합니다. Unity 오브젝트는 `Player [Transform, PlayerActor]`처럼 이름과 컴포넌트를 한 줄에 표시합니다. 배포 방법에 대한 질문이나 계획 요청만으로 커밋·푸시하지 않습니다.
 
-개인 `AGENTS.md`에서 스킬 사용을 지정하려면 설치 위치를 기준으로 `skills/<스킬 이름>/SKILL.md`를 연결합니다. 공통 작업 지침은 `config/codex/AGENTS.md`에서 관리합니다.
+개인 `AGENTS.md`에서 스킬 사용을 지정하려면 설치 위치를 기준으로 `skills/<스킬 이름>/SKILL.md`를 연결합니다. 공통 작업 지침은 `config/AGENTS.md`에서 관리합니다.
 
 ## 관리 원칙
 

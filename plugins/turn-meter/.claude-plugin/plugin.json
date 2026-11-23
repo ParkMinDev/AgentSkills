@@ -1,0 +1,6 @@
+{
+  "name": "turn-meter",
+  "version": "0.4.1",
+  "description": "응답 아래에 이번 턴의 토큰 사용량과, 평소 대비 변동을 감지한 advisor 줄을 붙입니다 (모델 호출 없음).",
+  "types": "./types/index.d.ts"
+}

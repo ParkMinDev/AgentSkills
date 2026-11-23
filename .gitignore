@@ -12,3 +12,4 @@ Desktop.ini
 __pycache__/
 *.py[cod]
 /Ignore/
+**/.claude-plugin/types/
