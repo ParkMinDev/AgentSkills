@@ -9,7 +9,8 @@
 | `config/AGENTS.md` | Codex·Claude Code 공통 작업 지침 원본 |
 | `skills/` | 공용 스킬 (Codex는 복사 설치, Claude Code는 `agent-skills` 플러그인) |
 | `plugins/turn-meter/` | Claude Code 모드: 응답 밑에 턴별 토큰 사용량 표시 |
-| `.claude-plugin/` | Claude Code 로컬 마켓플레이스 `ai-agentkit` (`agent-skills`, `turn-meter`) |
+| `plugins/change-report/` | Claude Code 모드: 응답 밑에 이번 턴의 추가·수정·삭제 파일 목록 표시 |
+| `.claude-plugin/` | Claude Code 로컬 마켓플레이스 `ai-agentkit` (`agent-skills`, `turn-meter`, `change-report`) |
 
 ## Claude Code 설치 및 갱신
 
@@ -19,6 +20,7 @@
 claude plugin marketplace add .
 claude plugin install agent-skills@ai-agentkit
 claude plugin install turn-meter@ai-agentkit
+claude plugin install change-report@ai-agentkit
 ```
 
 플러그인은 저장소 폴더를 직접 읽으므로 `git pull` 후 새 세션부터 반영됩니다. 공통 지침은 `~/.claude/CLAUDE.md`에 아래 한 줄을 두어 불러옵니다(경로는 PC에 맞게 수정).
