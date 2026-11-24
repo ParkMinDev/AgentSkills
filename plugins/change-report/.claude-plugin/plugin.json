@@ -1,6 +1,6 @@
 {
   "name": "change-report",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "응답 아래에 이번 턴에서 추가·수정·삭제된 파일과 줄 수를 접히는 카드로 붙입니다 (모델 호출 없음).",
   "types": "./types/index.d.ts"
 }

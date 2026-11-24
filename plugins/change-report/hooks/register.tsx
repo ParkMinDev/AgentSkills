@@ -10,7 +10,17 @@ import type { FileChange, Kind, Notes, Open } from '../types'
 export const CONFIG = {
   maxRows: 50, // 펼쳤을 때 최대 파일 줄 수 (넘으면 "외 N개")
   maxReadBytes: 4 * 1024 * 1024, // 삭제 전 줄 수를 세려고 읽는 최대 크기
+  // 셸 명령 전후 폴더 비교: 작업 폴더를 훑어 파일 목록을 비교한다. 한도를 넘으면 그 명령은 비교를 건너뛴다.
+  snapshotMaxFiles: 20_000, // 훑을 최대 파일 수
+  snapshotMaxMs: 1_500, // 한 번 훑는 데 쓸 최대 시간
+  newFileReadBytes: 1024 * 1024, // 셸이 만든 파일의 줄 수를 세려고 읽는 최대 크기
+  newFileReadMax: 30, // 한 명령에서 줄 수를 셀 최대 파일 수
+  skipDirs: [
+    '.git', '.plastic', '.svn', '.hg', '.vs', '.idea', 'node_modules', '__pycache__', '.venv', 'venv',
+    'library', 'temp', 'obj', 'logs', 'userSettings', '.gradle', '.next', '.cache',
+  ],
 }
+const SKIP_DIRS = new Set(CONFIG.skipDirs.map(d => d.toLowerCase()))
 
 const notesAtom = atom({ plugin: 'change-report', key: 'notes' } as const, {} as Notes)
 const openAtom = atom({ plugin: 'change-report', key: 'open' } as const, {} as Open)
@@ -194,13 +204,56 @@ async function trackWrite<R extends Done>(
   return r
 }
 
-// 셸 도구: 삭제 명령의 대상이 실행 전에 있었고 실행 후 없어졌으면 삭제로 기록한다.
+// ── 셸 명령 전후 폴더 비교 ──────────────────────────────────────
+// 소문자 절대 경로 → 파일 정보
+export type SnapEntry = { path: string; size: number; mtimeMs: number }
+export type Snapshot = Map<string, SnapEntry>
+
+// 작업 폴더의 파일 목록. 한도(파일 수·시간)를 넘으면 undefined.
+async function snapshot($: EngineInterface, root: string): Promise<Snapshot | undefined> {
+  const files: Snapshot = new Map()
+  const start = await $.clock.now()
+  const stack = [root]
+  while (stack.length > 0) {
+    const dir = stack.pop()!
+    const entries = await $.fs.list(dir).catch(() => undefined)
+    if (entries === undefined) continue
+    for (const en of entries) {
+      if (en.isLink) continue
+      const p = `${dir}/${en.name}`
+      if (en.kind === 'dir') {
+        if (!SKIP_DIRS.has(en.name.toLowerCase())) stack.push(p)
+      } else if (en.kind === 'file') {
+        files.set(p.toLowerCase(), { path: p, size: en.size, mtimeMs: en.mtimeMs })
+      }
+    }
+    if (files.size > CONFIG.snapshotMaxFiles) return undefined
+    if ((await $.clock.now()) - start > CONFIG.snapshotMaxMs) return undefined
+  }
+  return files
+}
+
+export type SnapDiff = { added: SnapEntry[]; modified: SnapEntry[]; deleted: SnapEntry[] }
+
+export const diffSnapshots = (before: Snapshot, after: Snapshot): SnapDiff => {
+  const diff: SnapDiff = { added: [], modified: [], deleted: [] }
+  for (const [k, a] of after) {
+    const b = before.get(k)
+    if (b === undefined) diff.added.push(a)
+    else if (b.size !== a.size || b.mtimeMs !== a.mtimeMs) diff.modified.push(a)
+  }
+  for (const [k, b] of before) if (!after.has(k)) diff.deleted.push(b)
+  return diff
+}
+
+// 셸 도구: 실행 전후 작업 폴더를 비교해 추가·수정·삭제를 기록한다.
+// 삭제 명령의 대상은 실행 전에 줄 수를 읽어 두고, 작업 폴더 밖이어도 기록한다.
 async function trackShell<R>($: EngineInterface, command: string, run: () => Promise<R>): Promise<R> {
-  const targets = deleteTargets(command)
-  if (targets.length === 0) return run()
-  const cwd = await $.session.cwd()
-  const before: { abs: string; isDir: boolean; lines?: number }[] = []
-  for (const t of targets) {
+  const cwd = slash(await $.session.cwd())
+  const before = await snapshot($, cwd).catch(() => undefined)
+
+  const targets: { abs: string; isDir: boolean; lines?: number }[] = []
+  for (const t of deleteTargets(command)) {
     const abs = absOf(t, cwd)
     const st = await $.fs.stat(abs).catch(() => undefined)
     if (!st) continue
@@ -209,12 +262,51 @@ async function trackShell<R>($: EngineInterface, command: string, run: () => Pro
       const text = await $.fs.read(abs).catch(() => undefined)
       if (text !== undefined && !text.includes('\u0000')) lines = countLines(text) // 바이너리는 세지 않는다
     }
-    before.push({ abs, isDir: st.kind === 'dir', lines })
+    targets.push({ abs, isDir: st.kind === 'dir', lines })
   }
+
   const r = await run()
-  for (const b of before) {
-    if (!(await $.fs.exists(b.abs).catch(() => true)))
-      record(b.abs, 'deleted', cwd, { plus: b.lines === undefined ? undefined : 0, minus: b.lines }, b.isDir)
+
+  try {
+    // 삭제 명령의 대상 중 실제로 없어진 것
+    const gone: typeof targets = []
+    for (const t of targets) if (!(await $.fs.exists(t.abs).catch(() => true))) gone.push(t)
+    const goneDirs = gone.filter(t => t.isDir).map(t => t.abs.toLowerCase() + '/')
+    const linesOf = new Map(gone.map(t => [t.abs.toLowerCase(), t.lines]))
+    const recorded = new Set<string>()
+
+    const after = before ? await snapshot($, cwd).catch(() => undefined) : undefined
+    if (before && after) {
+      const diff = diffSnapshots(before, after)
+      let reads = 0
+      for (const f of diff.added) {
+        let plus: number | undefined
+        if (f.size <= CONFIG.newFileReadBytes && reads < CONFIG.newFileReadMax) {
+          reads++
+          const text = await $.fs.read(f.path).catch(() => undefined)
+          if (text !== undefined && !text.includes('\u0000')) plus = countLines(text)
+        }
+        record(f.path, 'added', cwd, { plus, minus: plus === undefined ? undefined : 0 })
+        recorded.add(f.path.toLowerCase())
+      }
+      for (const f of diff.modified) {
+        record(f.path, 'modified', cwd, {}) // 셸이 고친 파일은 이전 내용을 몰라 줄 수를 생략한다
+        recorded.add(f.path.toLowerCase())
+      }
+      for (const f of diff.deleted) {
+        const key = f.path.toLowerCase()
+        if (goneDirs.some(d => key.startsWith(d))) continue // 지운 폴더 안의 파일은 폴더 한 줄로 묶는다
+        const lines = linesOf.get(key)
+        record(f.path, 'deleted', cwd, { plus: lines === undefined ? undefined : 0, minus: lines })
+        recorded.add(key)
+      }
+    }
+    for (const t of gone) {
+      if (recorded.has(t.abs.toLowerCase())) continue
+      record(t.abs, 'deleted', cwd, { plus: t.lines === undefined ? undefined : 0, minus: t.lines }, t.isDir)
+    }
+  } catch {
+    // 기록 실패는 무시한다 (도구 결과는 그대로 돌려준다)
   }
   return r
 }
