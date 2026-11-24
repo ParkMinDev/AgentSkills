@@ -36,7 +36,7 @@ claude plugin install change-report@ai-agentkit
 | [qa-workbook](skills/qa-workbook/SKILL.md) | 엑셀 검증대장과 사진 증거 링크를 갱신하고 남은 검증 항목을 관리합니다. |
 | [project-work-planning](skills/project-work-planning/SKILL.md) | Markdown 계획의 완료 기록과 작업 파일 수명을 관리하고 Base 표와 Canvas 순서도를 연결합니다. 저장 요청에 적용합니다. |
 | [explain-code-changes](skills/explain-code-changes/SKILL.md) | 코드 추가·수정·삭제 설명을 실제 파일·함수에 연결하고, 작업 종류에 따라 알고리즘·선언·관계로 표현합니다. |
-| [algorithm-flowchart](skills/algorithm-flowchart/SKILL.md) | 저장 요청의 순서도를 Obsidian Canvas로 작성합니다. 함수 선언부, 병렬 영역, 이벤트 점선, 변경 강조와 요청한 시간/메모리 수치를 표시합니다. |
+| [obsidian-canvas-flowchart](skills/obsidian-canvas-flowchart/SKILL.md) | 코드의 실행 흐름을 그린 순서도 Canvas를 만들거나 복사·수정하거나 노드를 추가·삭제할 때 적용합니다(작업·검증 절차도와 기획서 Canvas 제외). 예시 순서도를 기준으로 노드 설명 범례, 함수 펼침·접힘, 병렬 영역, 변경 노드 광택, 메모리 피크 배지, 하단 삭제 영역과 요청한 시간/메모리 수치를 표시합니다. |
 | [package-dev-release](skills/package-dev-release/SKILL.md) | PackageDev와 자체 패키지의 의존 버전, 변경 이력, 커밋·푸시 및 지정 프로젝트 적용을 처리합니다. |
 | [class-diagram](skills/class-diagram/SKILL.md) | 실제 코드나 합의된 설계의 클래스·인터페이스 관계를 Mermaid 클래스 다이어그램으로 설명합니다. |
 | [text-tree](skills/text-tree/SKILL.md) | Unity 오브젝트·컴포넌트, 폴더·파일 및 일반 계층 정보를 텍스트 트리로 설명합니다. |
@@ -49,7 +49,7 @@ claude plugin install change-report@ai-agentkit
 
 이 저장소를 복제한 뒤 저장소 루트에서 PowerShell로 실행합니다.
 
-Canvas의 이번 변경은 기존 색상을 유지한 10px 테두리로, 메모리 피크는 개별 노드의 빨간 외곽 광택으로 구분합니다. 함수·병렬 영역에는 광택을 넣지 않고 수치만 표시합니다. 재사용할 스타일은 [canvas-node-emphasis.css](skills/algorithm-flowchart/assets/canvas-node-emphasis.css)에 있으며, 허용된 보관소에 별도로 설치·활성화합니다. 스킬 복사만으로 Obsidian 설정이 변경되지는 않습니다.
+Canvas의 이번 변경은 노드 자기 색의 광택으로, 메모리 피크는 개별 노드 오른쪽 위 빨간 배지로 구분하며 노드 글꼴만 1.7배로 키웁니다. 표시 방식은 [예시 순서도](skills/obsidian-canvas-flowchart/assets/예시%20순서도.canvas)에 모두 담겨 있습니다. 재사용할 스타일은 [canvas-node-emphasis.css](skills/obsidian-canvas-flowchart/assets/canvas-node-emphasis.css)에 있으며, 허용된 보관소에 별도로 설치·활성화합니다. 스킬 복사만으로 Obsidian 설정이 변경되지는 않습니다.
 
 ```powershell
 $skillRoot = if ($env:CODEX_HOME) { Join-Path $env:CODEX_HOME 'skills' } else { Join-Path $env:USERPROFILE '.codex/skills' }
@@ -98,8 +98,8 @@ Copy-Item -LiteralPath './config/AGENTS.md' -Destination $instructionsPath -Forc
 | “검증대장에 결과 반영해줘” / “남은 검증 알려줘” | `qa-workbook` |
 | “이번 작업계획을 저장해줘” / “전체 계획에 완료 상태를 저장해줘” | `project-work-planning` |
 | “작업 계획 설명해줘” / “정리할 코드 찾아봐” / “왜 바꾸는지 쉽게 설명해줘” | `explain-code-changes` |
-| “이 함수 순서도를 저장해줘” / “멀티 순서도를 Canvas로 저장해줘” | `algorithm-flowchart` |
-| “측정 포함 순서도를 저장해줘” / “이전 측정값으로 순서도를 저장해줘” | `algorithm-flowchart` |
+| “이 함수 순서도를 저장해줘” / “멀티 순서도를 Canvas로 저장해줘” / “기존 Canvas를 복사해서 수정해줘” | `obsidian-canvas-flowchart` |
+| “측정 포함 순서도를 저장해줘” / “이전 측정값으로 순서도를 저장해줘” | `obsidian-canvas-flowchart` |
 | “Foundation 커밋·푸시하고 지정 프로젝트에 적용해줘” | `package-dev-release` |
 | “이 클래스들의 관계를 구조도로 보여줘” | `class-diagram` |
 | “플레이어 하이어라키를 텍스트 트리로 보여줘” / “폴더 구조 보여줘” | `text-tree` |

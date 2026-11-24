@@ -1,0 +1,72 @@
+/* @advanced-canvas-node-style
+key: memoryPeak
+label: 메모리 피크
+nodeTypes:
+  - text
+options:
+  - icon: circle-off
+    label: 표시 없음
+    value: null
+  - icon: memory-stick
+    label: 최대 전용 메모리 관측 (배지)
+    value: observed
+*/
+
+/* A corner tag keeps the node's shape, cost color and text unchanged.
+   Groups may show the peak value in their label but never get the tag. */
+.canvas-node:not(.canvas-node-group)[data-memory-peak="observed"]::after {
+  --badge-scale: clamp(1, var(--zoom-multiplier, 1), 4);
+  content: "메모리 피크";
+  position: absolute;
+  top: calc(-16px * var(--badge-scale));
+  right: calc(-12px * var(--badge-scale));
+  z-index: 10;
+  padding: calc(4px * var(--badge-scale)) calc(12px * var(--badge-scale));
+  border-radius: 999px;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: calc(18px * var(--badge-scale));
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 0 0 0 calc(3px * var(--badge-scale)) #ffffff;
+  pointer-events: none;
+}
+
+/* @advanced-canvas-node-style
+key: revisionEmphasis
+label: 이번 변경
+nodeTypes:
+  - text
+options:
+  - icon: circle-off
+    label: 표시 없음
+    value: null
+  - icon: sparkles
+    label: 변경 노드 광택 (노드 색)
+    value: current
+*/
+
+/* Changed nodes glow in their own cost color: green, yellow or red.
+   Obsidian 1.15 stores the node color in --canvas-color as a complete color
+   (not an "r, g, b" triplet), so transparency is applied with color-mix.
+   The glow grows with the zoom multiplier so it stays visible zoomed out. */
+.canvas-node:not(.canvas-node-group)[data-revision-emphasis="current"] {
+  --change-glow-scale: clamp(1, var(--zoom-multiplier, 1), 4);
+  --change-glow-color: var(--canvas-color, #94a3b8);
+  filter:
+    drop-shadow(0 0 calc(6px * var(--change-glow-scale)) var(--change-glow-color))
+    drop-shadow(0 0 calc(20px * var(--change-glow-scale)) color-mix(in srgb, var(--change-glow-color) 95%, transparent))
+    drop-shadow(0 0 calc(46px * var(--change-glow-scale)) color-mix(in srgb, var(--change-glow-color) 75%, transparent));
+}
+
+/* Node text is 1.7x the vault's base text size. Node sizes stay as drawn;
+   only the text grows. Group labels keep their own size. */
+.canvas-node:not(.canvas-node-group) .canvas-node-content {
+  font-size: calc(var(--font-text-size, 16px) * 1.7);
+}
+
+.canvas-node:not(.canvas-node-group) .canvas-node-content .markdown-preview-view,
+.canvas-node:not(.canvas-node-group) .canvas-node-content .markdown-rendered {
+  font-size: inherit;
+}
