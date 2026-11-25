@@ -39,6 +39,7 @@ claude plugin install change-report@ai-agentkit
 | [show-class-shape](skills/show-class-shape/SKILL.md) | 결과물 표현: 클래스·공개 API 선언과 동작 표, 기존 API의 바뀌는 동작을 보여 줍니다. 기존 클래스가 바뀌면 클래스 블록을 diff로 씁니다. |
 | [show-diff](skills/show-diff/SKILL.md) | 결과물 표현 공통: 텍스트 하나(파일·설정·명세·목록·트리·선언)가 바뀔 때, 현재 기준으로 바뀌는 줄만 `+`/`-`로 표시하고 색은 `diff` 블록에 맡깁니다. 새로 생기는 텍스트 파일·설정·명세의 내용도 보여 줍니다. |
 | [show-code-flowchart](skills/show-code-flowchart/SKILL.md) | 코드의 실행 흐름을 그린 순서도 Canvas를 만들거나 복사·수정하거나 노드를 추가·삭제할 때 적용합니다(작업·검증 절차도와 기획서 Canvas 제외). 예시 순서도를 기준으로 노드 설명 범례, 함수 펼침·접힘, 병렬 영역, 변경 노드 광택, 메모리 피크 배지, 하단 삭제 영역과 요청한 시간/메모리 수치를 표시합니다. |
+| [show-game-flowchart](skills/show-game-flowchart/SKILL.md) | 결과물 표현: 게임 기획의 플레이 흐름·장면 전환·조작 분기를 Obsidian Canvas 기획서로 만들거나 고치고, 화면 시안과 구현 스크린샷을 장면에 배치합니다. 캡슐·마름모 노드에 Obsidian Advanced Canvas 플러그인이 필요합니다. 기본 위치는 `<프로젝트명>.DevDocs/game-flowchart/`입니다. |
 | [workflow-package-dev-push](skills/workflow-package-dev-push/SKILL.md) | PackageDev와 자체 패키지의 의존 버전, 변경 이력, 커밋·푸시 및 지정 프로젝트 적용을 처리합니다. |
 | [show-text-tree](skills/show-text-tree/SKILL.md) | 결과물 표현: Unity 오브젝트·컴포넌트, 폴더·파일 및 일반 계층 정보를 텍스트 트리로 보여 줍니다. |
 | [csharp-project-style](skills/csharp-project-style/SKILL.md) | Unity 및 일반 C# 코드의 선언·멤버 순서·비동기·직렬화 필드 스타일을 적용합니다. |
@@ -105,6 +106,7 @@ Copy-Item -LiteralPath './config/AGENTS.md' -Destination $instructionsPath -Forc
 | “이 파일 어떻게 바뀌는지 보여줘” / “변경 전후 비교해줘” / “설정 파일 형태 보여줘”                    | `show-diff`                                   |
 | “이 함수 순서도를 저장해줘” / “멀티 순서도를 Canvas로 저장해줘” / “기존 Canvas를 복사해서 수정해줘”     | `show-code-flowchart`                         |
 | “측정 포함 순서도를 저장해줘” / “이전 측정값으로 순서도를 저장해줘”                               | `show-code-flowchart`                         |
+| “게임 흐름 기획서 만들어줘” / “장면 전환 흐름을 캔버스로 그려줘”                               | `show-game-flowchart`                         |
 | “Foundation 커밋·푸시하고 지정 프로젝트에 적용해줘”                                     | `workflow-package-dev-push`                   |
 | “플레이어 하이어라키를 텍스트 트리로 보여줘” / “폴더 구조 보여줘”                                | `show-text-tree`                              |
 | “이 C# 코드를 프로젝트 스타일에 맞춰 작성해줘”                                           | `csharp-project-style`                        |

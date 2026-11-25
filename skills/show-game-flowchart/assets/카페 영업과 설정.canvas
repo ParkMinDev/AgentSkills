@@ -1,0 +1,1084 @@
+{
+  "nodes": [
+    {
+      "type": "group",
+      "id": "main-game-flow-area",
+      "x": -1380,
+      "y": -145,
+      "width": 6240,
+      "height": 5990,
+      "color": "#B3A1C9",
+      "label": "메인 게임 흐름 · 오프닝부터 다음 주문까지"
+    },
+    {
+      "id": "serving-area-group",
+      "type": "group",
+      "x": 940,
+      "y": 1830,
+      "width": 3850,
+      "height": 2980,
+      "color": "#9DBBCB",
+      "label": "서빙과 손님 반응"
+    },
+    {
+      "id": "legend-root",
+      "type": "group",
+      "x": -1480,
+      "y": -2320,
+      "width": 5450,
+      "height": 1930,
+      "color": "#64748b",
+      "label": "노드·그룹·연결선 정의"
+    },
+    {
+      "id": "craft-tools-group",
+      "type": "group",
+      "x": -1270,
+      "y": 1250,
+      "width": 920,
+      "height": 4550,
+      "color": "#9DBBCB",
+      "label": "제작 도구 · 사용 후 주방으로"
+    },
+    {
+      "id": "legend-line-area",
+      "type": "group",
+      "x": -1400,
+      "y": -1110,
+      "width": 5260,
+      "height": 530,
+      "color": "#475569",
+      "label": "연결선 표기 · 기본 진행 / 열기와 복귀 / 예외 대응"
+    },
+    {
+      "type": "group",
+      "id": "settings-flow-area",
+      "x": 4930,
+      "y": -145,
+      "width": 1300,
+      "height": 1915,
+      "color": "#B3A1C9",
+      "label": "설정 흐름 · 게임 중 언제든"
+    },
+    {
+      "id": "legend-shapes",
+      "type": "group",
+      "x": -1400,
+      "y": -2190,
+      "width": 1950,
+      "height": 980,
+      "color": "#475569",
+      "label": "노드 모양"
+    },
+    {
+      "id": "legend-connections",
+      "type": "group",
+      "x": 2200,
+      "y": -2190,
+      "width": 1660,
+      "height": 980,
+      "color": "#475569",
+      "label": "영역 묶기"
+    },
+    {
+      "id": "legend-flow-colors",
+      "type": "group",
+      "x": 675,
+      "y": -2190,
+      "width": 1400,
+      "height": 980,
+      "color": "#475569",
+      "label": "흐름 색"
+    },
+    {
+      "id": "02-kitchen-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 0,
+      "y": 2643,
+      "width": 760,
+      "height": 600,
+      "color": "4",
+      "label": " "
+    },
+    {
+      "id": "03-recipe-popup-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 0,
+      "y": 3520,
+      "width": 760,
+      "height": 600,
+      "color": "4",
+      "label": " "
+    },
+    {
+      "id": "09-serve-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 2040,
+      "y": 2050,
+      "width": 760,
+      "height": 600,
+      "color": "4",
+      "label": " "
+    },
+    {
+      "id": "10-settings-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 5230,
+      "y": 680,
+      "width": 760,
+      "height": 600,
+      "color": "4",
+      "label": " "
+    },
+    {
+      "id": "10-customer-angry-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 3070,
+      "y": 2550,
+      "width": 760,
+      "height": 600,
+      "color": "2",
+      "label": " "
+    },
+    {
+      "id": "11-customer-quiet-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 3070,
+      "y": 3303,
+      "width": 760,
+      "height": 600,
+      "color": "2",
+      "label": " "
+    },
+    {
+      "id": "12-customer-refund-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 3070,
+      "y": 4056,
+      "width": 760,
+      "height": 600,
+      "color": "2",
+      "label": " "
+    },
+    {
+      "id": "04-grind-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": -1190,
+      "y": 1460,
+      "width": 760,
+      "height": 600,
+      "color": "4",
+      "label": " "
+    },
+    {
+      "id": "05-tamp-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": -1190,
+      "y": 2213,
+      "width": 760,
+      "height": 600,
+      "color": "4",
+      "label": " "
+    },
+    {
+      "id": "06-extract-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": -1190,
+      "y": 2966,
+      "width": 760,
+      "height": 600,
+      "color": "4",
+      "label": " "
+    },
+    {
+      "id": "07-water-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": -1190,
+      "y": 3719,
+      "width": 760,
+      "height": 600,
+      "color": "4",
+      "label": " "
+    },
+    {
+      "id": "live-open-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 80,
+      "y": 908,
+      "width": 600,
+      "height": 675,
+      "color": "4",
+      "label": " "
+    },
+    {
+      "id": "live-order-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 80,
+      "y": 1776,
+      "width": 600,
+      "height": 675,
+      "color": "4",
+      "label": " "
+    },
+    {
+      "id": "opening-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center",
+        "shape": "pill"
+      },
+      "x": 80,
+      "y": 40,
+      "width": 600,
+      "height": 675,
+      "color": "6",
+      "label": " "
+    },
+    {
+      "id": "settings-icon-group",
+      "type": "group",
+      "styleAttributes": {
+        "textAlign": "center",
+        "shape": "pill"
+      },
+      "x": 5230,
+      "y": 30,
+      "width": 530,
+      "height": 450,
+      "color": "6",
+      "label": " "
+    },
+    {
+      "id": "settings-return",
+      "type": "text",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "text": "### 게임 복귀 · 열기 전 화면으로",
+      "x": 4970,
+      "y": 1440,
+      "width": 490,
+      "height": 180,
+      "color": "4"
+    },
+    {
+      "id": "app-exit-end",
+      "type": "text",
+      "styleAttributes": {
+        "textAlign": "center",
+        "shape": "pill"
+      },
+      "text": "### 앱 종료 · 게임 창 닫힘",
+      "x": 5630,
+      "y": 1440,
+      "width": 520,
+      "height": 200,
+      "color": "6"
+    },
+    {
+      "file": "화면 시안/10-settings.jpg",
+      "type": "file",
+      "id": "10-settings",
+      "x": 5257,
+      "y": 864,
+      "width": 707,
+      "height": 398
+    },
+    {
+      "text": "### 오프닝\n\n**게임 시작 · 현재 구현**\n\n연출이 끝나면 영업을 시작합니다.",
+      "type": "text",
+      "id": "scene-caption-opening",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": 190,
+      "y": 74,
+      "width": 380,
+      "height": 145
+    },
+    {
+      "file": "화면 시안/settings-icon.jpg",
+      "type": "file",
+      "id": "settings-icon",
+      "x": 5371,
+      "y": 198,
+      "width": 248,
+      "height": 248
+    },
+    {
+      "text": "### 설정\n\n**BGM · 효과음**\n\n음량을 조절합니다. 닫으면 이전 화면으로 돌아가고 종료를 누르면 게임이 끝납니다.",
+      "type": "text",
+      "id": "scene-caption-10-settings",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": 5246,
+      "y": 690,
+      "width": 728,
+      "height": 145
+    },
+    {
+      "text": "### 설정 아이콘\n\n**게임 중 언제든**\n\n아이콘을 누르면 설정이 열립니다.",
+      "type": "text",
+      "id": "scene-caption-settings-icon",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": 5330,
+      "y": 62,
+      "width": 330,
+      "height": 145
+    },
+    {
+      "id": "legend-line-progress-to",
+      "type": "text",
+      "text": "### 주방",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": -225,
+      "y": -925,
+      "width": 260,
+      "height": 160
+    },
+    {
+      "text": "### 영업 시작\n\n**손님 맞이 · 현재 구현**\n\n손님이 가게에 들어와 주문합니다.",
+      "type": "text",
+      "id": "scene-caption-live-open",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": 96,
+      "y": 918,
+      "width": 568,
+      "height": 145
+    },
+    {
+      "id": "legend-end",
+      "type": "text",
+      "text": "### 종료\n\n해당 흐름이 끝나는 지점입니다.",
+      "styleAttributes": {
+        "shape": "pill",
+        "textAlign": "center"
+      },
+      "x": -210,
+      "y": -2092,
+      "width": 520,
+      "height": 260,
+      "color": "6"
+    },
+    {
+      "id": "legend-general",
+      "type": "text",
+      "text": "### 일반 흐름\n\n정상적으로 이어지는 기본 진행입니다. 플레이어가 의도적으로 고른 정상 선택도 여기에 포함합니다.",
+      "x": 940,
+      "y": -2080,
+      "width": 870,
+      "height": 300,
+      "color": "4"
+    },
+    {
+      "id": "legend-exception",
+      "type": "text",
+      "text": "### 비일반 흐름\n\n실패, 예외, 복구 요청처럼 기준을 벗어난 결과에 대응하는 흐름입니다.",
+      "x": 940,
+      "y": -1700,
+      "width": 870,
+      "height": 300,
+      "color": "2"
+    },
+    {
+      "id": "legend-line-return-from",
+      "type": "text",
+      "text": "### 주방",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 705,
+      "y": -925,
+      "width": 260,
+      "height": 160
+    },
+    {
+      "id": "legend-line-return-to",
+      "type": "text",
+      "text": "### 레시피 팝업",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 1495,
+      "y": -925,
+      "width": 260,
+      "height": 160
+    },
+    {
+      "id": "legend-group-definition",
+      "type": "text",
+      "text": "### 기능 그룹\n\n제작 도구나 서빙처럼 한 기능에 속하는 장면과 행동을 묶습니다.",
+      "x": 2340,
+      "y": -2090,
+      "width": 1340,
+      "height": 300,
+      "color": "#9DBBCB"
+    },
+    {
+      "text": "### 흐름 그룹\n\n같은 시작점에서 이어지는 장면과 분기를 하나의 바깥 영역으로 묶습니다. 흐름 안에는 기능 그룹을 둘 수 있습니다.",
+      "type": "text",
+      "id": "legend-flow-group-definition",
+      "x": 2340,
+      "y": -1700,
+      "width": 1340,
+      "height": 320,
+      "color": "#B3A1C9"
+    },
+    {
+      "id": "legend-general-node",
+      "type": "text",
+      "text": "### 일반 노드\n\n장면, 행동, 상태를 나타냅니다. 필요하면 화면 시안이나 스크린샷을 첨부할 수 있습니다.",
+      "x": -325,
+      "y": -1760,
+      "width": 750,
+      "height": 300
+    },
+    {
+      "id": "legend-begin",
+      "type": "text",
+      "text": "### 시작\n\n해당 흐름이 시작되는 지점입니다.",
+      "styleAttributes": {
+        "shape": "pill",
+        "textAlign": "center"
+      },
+      "x": -1170,
+      "y": -2092,
+      "width": 520,
+      "height": 260,
+      "color": "6"
+    },
+    {
+      "id": "legend-check",
+      "type": "text",
+      "text": "### 조건 판단\r\n\r\n상태나 결과에 따라 갈라집니다.",
+      "styleAttributes": {
+        "shape": "diamond",
+        "textAlign": "center"
+      },
+      "x": -1190,
+      "y": -1742,
+      "width": 560,
+      "height": 420,
+      "color": "4"
+    },
+    {
+      "id": "legend-line-progress-from",
+      "type": "text",
+      "text": "### 주문",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": -1015,
+      "y": -925,
+      "width": 260,
+      "height": 160
+    },
+    {
+      "id": "legend-line-exception-from",
+      "type": "text",
+      "text": "### 서빙 판정",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 2425,
+      "y": -925,
+      "width": 260,
+      "height": 160
+    },
+    {
+      "id": "legend-line-exception-to",
+      "type": "text",
+      "text": "### 손님 반응",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "x": 3215,
+      "y": -925,
+      "width": 260,
+      "height": 160
+    },
+    {
+      "text": "### 에스프레소 머신\n\n**샷 추출**\n\n머신을 조작해 샷을 추출합니다. 작업대로 돌아오면 추출한 샷이 보입니다.",
+      "type": "text",
+      "id": "scene-caption-06-extract",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": -1174,
+      "y": 2976,
+      "width": 728,
+      "height": 145
+    },
+    {
+      "text": "### 꼼꼼한 손님\n\n**주문 기준 미달**\n\n손님이 환불을 요청한 뒤 가게를 떠납니다.",
+      "type": "text",
+      "id": "scene-caption-12-customer-refund",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": 3086,
+      "y": 4066,
+      "width": 728,
+      "height": 145
+    },
+    {
+      "id": "customer-personality-decision",
+      "type": "text",
+      "text": "### 손님 성격은?\r\n\r\n제작 미달 · 손님 성격에 따라 반응",
+      "styleAttributes": {
+        "textAlign": "center",
+        "shape": "diamond"
+      },
+      "x": 2050,
+      "y": 3400,
+      "width": 700,
+      "height": 420,
+      "color": "2"
+    },
+    {
+      "file": "화면 시안/06-extract.jpg",
+      "type": "file",
+      "id": "06-extract",
+      "x": -1163,
+      "y": 3150,
+      "width": 707,
+      "height": 398
+    },
+    {
+      "file": "화면 시안/07-water.jpg",
+      "type": "file",
+      "id": "07-water",
+      "x": -1163,
+      "y": 3903,
+      "width": 707,
+      "height": 398
+    },
+    {
+      "text": "### 온수 붓기\n\n**물의 양 조절**\n\n온수를 직접 붓습니다. 작업대에서 컵에 담긴 물의 양을 확인합니다.",
+      "type": "text",
+      "id": "scene-caption-07-water",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": -1174,
+      "y": 3729,
+      "width": 728,
+      "height": 145
+    },
+    {
+      "file": "화면 시안/09-serve-money.jpg",
+      "type": "file",
+      "id": "09-serve",
+      "x": 2067,
+      "y": 2234,
+      "width": 707,
+      "height": 398
+    },
+    {
+      "id": "serve-order-decision",
+      "type": "text",
+      "text": "### 주문과 품질 기준을 충족했나?\r\n\r\n서빙 · 주문과 컵 상태 비교",
+      "styleAttributes": {
+        "textAlign": "center",
+        "shape": "diamond"
+      },
+      "x": 1088,
+      "y": 2733,
+      "width": 700,
+      "height": 420,
+      "color": "4"
+    },
+    {
+      "file": "화면 시안/03-recipe-popup.jpg",
+      "type": "file",
+      "id": "03-recipe-popup",
+      "x": 27,
+      "y": 3704,
+      "width": 707,
+      "height": 398
+    },
+    {
+      "file": "화면 시안/10-customer-angry.jpg",
+      "type": "file",
+      "id": "10-customer-angry",
+      "x": 3097,
+      "y": 2734,
+      "width": 707,
+      "height": 398
+    },
+    {
+      "text": "### 직설적인 손님\n\n**주문 기준 미달**\n\n손님이 음료 맛에 불만을 말하고 가게를 떠납니다.",
+      "type": "text",
+      "id": "scene-caption-10-customer-angry",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": 3086,
+      "y": 2560,
+      "width": 728,
+      "height": 145
+    },
+    {
+      "text": "### 조용한 손님\n\n**주문 기준 미달**\n\n손님이 속으로 다시 오지 않겠다고 생각하며 가게를 떠납니다.",
+      "type": "text",
+      "id": "scene-caption-11-customer-quiet",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": 3086,
+      "y": 3313,
+      "width": 728,
+      "height": 145
+    },
+    {
+      "text": "### 레시피 선택\n\n**주방에서 열기**\n\n레시피를 선택하면 작업대에 표시할 제작법이 바뀝니다.",
+      "type": "text",
+      "id": "scene-caption-03-recipe-popup",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": 16,
+      "y": 3530,
+      "width": 728,
+      "height": 145
+    },
+    {
+      "file": "화면 시안/02-kitchen-progress.jpg",
+      "type": "file",
+      "id": "02-kitchen",
+      "x": 27,
+      "y": 2827,
+      "width": 707,
+      "height": 398
+    },
+    {
+      "text": "### 주방 공용 작업대\n\n**도구 선택 · 서빙**\n\n도구를 쓸 때마다 작업 결과가 중앙에 쌓입니다. 음료가 미완성이어도 서빙할 수 있습니다.",
+      "type": "text",
+      "id": "scene-caption-02-kitchen",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": 16,
+      "y": 2653,
+      "width": 728,
+      "height": 145
+    },
+    {
+      "file": "화면 시안/opening.jpg",
+      "type": "file",
+      "id": "opening",
+      "x": 268,
+      "y": 213,
+      "width": 225,
+      "height": 459
+    },
+    {
+      "id": "customer-depart",
+      "type": "text",
+      "styleAttributes": {
+        "textAlign": "center"
+      },
+      "text": "### 손님 퇴장 · 다음 손님 맞이",
+      "x": 4075,
+      "y": 2710,
+      "width": 640,
+      "height": 185,
+      "color": "4"
+    },
+    {
+      "file": "화면 시안/11-customer-quiet.jpg",
+      "type": "file",
+      "id": "11-customer-quiet",
+      "x": 3097,
+      "y": 3487,
+      "width": 707,
+      "height": 398
+    },
+    {
+      "file": "화면 시안/12-customer-refund.jpg",
+      "type": "file",
+      "id": "12-customer-refund",
+      "x": 3097,
+      "y": 4240,
+      "width": 707,
+      "height": 398
+    },
+    {
+      "text": "### 서빙 성공\n\n**대금 받기 · 머니 +10**\n\n주문에 맞는 음료를 건네면 보유 금액이 올라갑니다.",
+      "type": "text",
+      "id": "scene-caption-09-serve",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": 2056,
+      "y": 2060,
+      "width": 728,
+      "height": 145
+    },
+    {
+      "file": "화면 시안/05-tamp.jpg",
+      "type": "file",
+      "id": "05-tamp",
+      "x": -1163,
+      "y": 2397,
+      "width": 707,
+      "height": 398
+    },
+    {
+      "file": "화면 시안/04-grind.jpg",
+      "type": "file",
+      "id": "04-grind",
+      "x": -1163,
+      "y": 1644,
+      "width": 707,
+      "height": 398
+    },
+    {
+      "text": "### 그라인더\n\n**원두 분쇄**\n\n그라인더를 직접 조작합니다. 작업대에서 분쇄한 가루를 확인합니다.",
+      "type": "text",
+      "id": "scene-caption-04-grind",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": -1174,
+      "y": 1470,
+      "width": 728,
+      "height": 145
+    },
+    {
+      "text": "### 탬퍼\n\n**가루 다지기**\n\n탬퍼로 커피 가루를 누릅니다. 다진 결과는 작업대에 반영됩니다.",
+      "type": "text",
+      "id": "scene-caption-05-tamp",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": -1174,
+      "y": 2223,
+      "width": 728,
+      "height": 145
+    },
+    {
+      "file": "화면 시안/cart.jpg",
+      "type": "file",
+      "id": "live-open",
+      "x": 190,
+      "y": 1081,
+      "width": 381,
+      "height": 460
+    },
+    {
+      "file": "화면 시안/cart.jpg",
+      "type": "file",
+      "id": "live-order",
+      "x": 190,
+      "y": 1949,
+      "width": 381,
+      "height": 460
+    },
+    {
+      "text": "### 따뜻한 아메리카노 주문\n\n**주문 접수 · 현재 구현**\n\n주문을 확인하고 ‘주방으로’를 눌러 제작을 시작합니다.",
+      "type": "text",
+      "id": "scene-caption-live-order",
+      "styleAttributes": {
+        "border": "invisible"
+      },
+      "x": 96,
+      "y": 1786,
+      "width": 568,
+      "height": 145
+    }
+  ],
+  "edges": [
+    {
+      "id": "live-sign",
+      "fromFloating": false,
+      "fromNode": "live-open-group",
+      "fromSide": "bottom",
+      "toNode": "live-order-group",
+      "toSide": "top",
+      "color": "#22C55E",
+      "label": "영업 시작 → 손님 주문"
+    },
+    {
+      "id": "opening-to-business",
+      "fromNode": "opening-group",
+      "fromSide": "bottom",
+      "toNode": "live-open-group",
+      "toSide": "top",
+      "color": "#22C55E",
+      "label": "오프닝 연출 종료"
+    },
+    {
+      "id": "order-kitchen",
+      "fromFloating": false,
+      "fromNode": "live-order-group",
+      "fromSide": "bottom",
+      "toNode": "02-kitchen-group",
+      "toSide": "top",
+      "color": "#22C55E",
+      "label": "주방으로"
+    },
+    {
+      "id": "serve-repeat",
+      "styleAttributes": {
+        "pathfindingMethod": "square"
+      },
+      "fromNode": "customer-depart",
+      "fromSide": "top",
+      "toNode": "live-open-group",
+      "toSide": "right",
+      "color": "#22C55E",
+      "label": "다음 주문"
+    },
+    {
+      "id": "settings-open",
+      "fromNode": "settings-icon-group",
+      "fromSide": "bottom",
+      "toNode": "10-settings-group",
+      "toSide": "top",
+      "color": "#22C55E",
+      "label": "설정 아이콘 누르기"
+    },
+    {
+      "id": "2a2b71032b351ab7",
+      "styleAttributes": {},
+      "toFloating": false,
+      "fromFloating": false,
+      "fromNode": "02-kitchen-group",
+      "fromSide": "bottom",
+      "toNode": "03-recipe-popup-group",
+      "toSide": "top",
+      "fromEnd": "arrow",
+      "color": "#22C55E",
+      "label": "레시피 열기 / 선택·닫기"
+    },
+    {
+      "id": "legend-line-progress",
+      "fromNode": "legend-line-progress-from",
+      "fromSide": "right",
+      "toNode": "legend-line-progress-to",
+      "toSide": "left",
+      "color": "#22C55E",
+      "label": "주방으로"
+    },
+    {
+      "id": "legend-line-return",
+      "fromNode": "legend-line-return-from",
+      "fromSide": "right",
+      "toNode": "legend-line-return-to",
+      "toSide": "left",
+      "fromEnd": "arrow",
+      "color": "#22C55E",
+      "label": "열기 / 닫기"
+    },
+    {
+      "id": "legend-line-exception",
+      "fromNode": "legend-line-exception-from",
+      "fromSide": "right",
+      "toNode": "legend-line-exception-to",
+      "toSide": "left",
+      "color": "#F97316",
+      "label": "기준 미달"
+    },
+    {
+      "id": "serve-success",
+      "toFloating": false,
+      "fromNode": "serve-order-decision",
+      "fromSide": "top",
+      "toNode": "09-serve-group",
+      "toSide": "left",
+      "color": "#22C55E",
+      "label": "예 · 대금 받기"
+    },
+    {
+      "id": "serve-failure",
+      "fromNode": "serve-order-decision",
+      "fromSide": "right",
+      "toNode": "customer-personality-decision",
+      "toSide": "left",
+      "color": "#F97316",
+      "label": "아니요 · 대금 없음"
+    },
+    {
+      "id": "angry",
+      "fromNode": "customer-personality-decision",
+      "fromSide": "right",
+      "toNode": "10-customer-angry-group",
+      "toSide": "left",
+      "color": "#F97316",
+      "label": "직설적인 손님"
+    },
+    {
+      "id": "quiet",
+      "fromNode": "customer-personality-decision",
+      "fromSide": "right",
+      "toNode": "11-customer-quiet-group",
+      "toSide": "left",
+      "color": "#F97316",
+      "label": "조용한 손님"
+    },
+    {
+      "id": "refund",
+      "fromNode": "customer-personality-decision",
+      "fromSide": "right",
+      "toNode": "12-customer-refund-group",
+      "toSide": "left",
+      "color": "#F97316",
+      "label": "꼼꼼한 손님"
+    },
+    {
+      "id": "settings-quit",
+      "fromNode": "10-settings-group",
+      "fromSide": "bottom",
+      "toNode": "app-exit-end",
+      "toSide": "top",
+      "color": "#22C55E",
+      "label": "게임 종료"
+    },
+    {
+      "id": "settings-close",
+      "fromNode": "10-settings-group",
+      "fromSide": "bottom",
+      "toNode": "settings-return",
+      "toSide": "top",
+      "color": "#22C55E",
+      "label": "닫기"
+    },
+    {
+      "id": "success-depart",
+      "fromNode": "09-serve-group",
+      "fromSide": "right",
+      "toNode": "customer-depart",
+      "toSide": "left",
+      "color": "#22C55E",
+      "label": "머니 +10"
+    },
+    {
+      "id": "angry-depart",
+      "fromNode": "10-customer-angry-group",
+      "fromSide": "right",
+      "toNode": "customer-depart",
+      "toSide": "left",
+      "color": "#F97316"
+    },
+    {
+      "id": "quiet-depart",
+      "fromFloating": false,
+      "fromNode": "11-customer-quiet-group",
+      "fromSide": "right",
+      "toNode": "customer-depart",
+      "toSide": "left",
+      "color": "#F97316"
+    },
+    {
+      "id": "refund-depart",
+      "fromNode": "12-customer-refund-group",
+      "fromSide": "right",
+      "toNode": "customer-depart",
+      "toSide": "left",
+      "color": "#F97316",
+      "label": "환불 요청 후 퇴장"
+    },
+    {
+      "id": "kitchen-to-serving",
+      "fromNode": "02-kitchen-group",
+      "fromSide": "right",
+      "toNode": "serve-order-decision",
+      "toSide": "left",
+      "color": "#22C55E",
+      "label": "서빙하기 · 미완성도 가능"
+    },
+    {
+      "id": "grind-hub",
+      "fromNode": "02-kitchen-group",
+      "fromSide": "left",
+      "toNode": "04-grind-group",
+      "toSide": "right",
+      "fromEnd": "arrow",
+      "color": "#22C55E",
+      "label": "분쇄 / 가루 반영"
+    },
+    {
+      "id": "tamp-hub",
+      "toFloating": false,
+      "fromNode": "02-kitchen-group",
+      "fromSide": "left",
+      "toNode": "05-tamp-group",
+      "toSide": "right",
+      "fromEnd": "arrow",
+      "color": "#22C55E",
+      "label": "탬핑 / 다진 가루 반영"
+    },
+    {
+      "id": "extract-hub",
+      "toFloating": false,
+      "fromNode": "02-kitchen-group",
+      "fromSide": "left",
+      "toNode": "06-extract-group",
+      "toSide": "right",
+      "fromEnd": "arrow",
+      "color": "#22C55E",
+      "label": "추출 / 샷 반영"
+    },
+    {
+      "id": "water-hub",
+      "fromNode": "02-kitchen-group",
+      "fromSide": "left",
+      "toNode": "07-water-group",
+      "toSide": "right",
+      "fromEnd": "arrow",
+      "color": "#22C55E",
+      "label": "온수 붓기 / 물 양 반영"
+    }
+  ],
+  "metadata": {
+    "version": "1.0-1.0",
+    "frontmatter": {}
+  }
+}
