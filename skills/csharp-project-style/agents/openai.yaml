@@ -1,8 +1,8 @@
 interface:
   display_name: "C# Project Style"
   short_description: "C# 코드를 프로젝트 스타일에 맞춰 작성합니다"
-  icon_small: "./agents/icon.png"
-  icon_large: "./agents/icon.png"
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
   brand_color: "#0A6CFF"
   default_prompt: "$csharp-project-style 스킬로 이 C# 코드를 프로젝트 스타일에 맞춰 작성해줘."
 policy:

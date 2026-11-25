@@ -1,8 +1,8 @@
 interface:
   display_name: "Show Game Flowchart"
   short_description: "게임 플레이 흐름을 Canvas 기획서로 그립니다"
-  icon_small: "./agents/icon.png"
-  icon_large: "./agents/icon.png"
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
   brand_color: "#0A6CFF"
   default_prompt: "$show-game-flowchart 스킬로 게임 흐름 기획서를 만들어줘."
 policy:

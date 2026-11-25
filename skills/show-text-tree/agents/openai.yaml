@@ -1,8 +1,8 @@
 interface:
   display_name: "Show Text Tree"
   short_description: "계층 구조를 텍스트 트리로 보여 줍니다"
-  icon_small: "./agents/icon.png"
-  icon_large: "./agents/icon.png"
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
   brand_color: "#0A6CFF"
   default_prompt: "$show-text-tree 스킬로 폴더 구조를 보여줘."
 policy:
