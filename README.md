@@ -34,10 +34,10 @@ claude plugin install change-report@ai-agentkit
 
 | 스킬 | 용도 |
 | --- | --- |
-| [workflow-planning-execute](skills/workflow-planning-execute/SKILL.md) | 워크플로우: 계획 파일을 만들고 고치고(저장·문서·“작업계획에 반영”), 그 파일대로 실행하고, 완료되면 전체 계획에 기록하고 작업 파일을 `planning/완료/`로 옮깁니다. 전체 계획은 ✍️ 사용자 메모 · 📋 계획(진행 중·남은 계획·완료 기록) · 📌 고정 방침 · 🤖 에이전트 참고 영역, 작업계획은 ✍️ 사용자 메모 · 📦 결과물(`show-result`) · 📝 계획 요약 · 🔢 작업 순서 · ✅ 검증 · 🤖 에이전트용 계획으로 쓰고, 계획이 바뀌면 최신 계획으로 다시 씁니다. |
+| [workflow-planning-execute](skills/workflow-planning-execute/SKILL.md) | 워크플로우: 계획 파일을 만들고 고치고(저장·문서·“작업계획에 반영”), 그 파일대로 실행하고, 완료되면 전체 계획에 기록하고 작업 파일을 `planning/완료/`로 옮깁니다. 전체 계획은 ✍️ 사용자 메모 · 📋 계획(진행 중·남은 계획) · ✅ 검증(남은 검증) · 🏁 완료(계획·검증) · 📌 고정 방침 · 🤖 에이전트 참고 영역, 작업계획은 ✍️ 사용자 메모 · 📦 결과물(`show-result`) · 📝 계획 요약 · 🔢 작업 순서 · ✅ 검증 · 🤖 에이전트용 계획으로 쓰고, 계획이 바뀌면 최신 계획으로 다시 씁니다. |
 | [show-result](skills/show-result/SKILL.md) | 결과물 표현 조합: 작업으로 생기거나 바뀌는 결과물 전체를 클래스 → 폴더 → 파일 순서로, 알맞은 표현 스킬을 골라 보여 줍니다. |
-| [show-class-shape](skills/show-class-shape/SKILL.md) | 결과물 표현: 클래스·공개 API 선언과 동작 표, 기존 API의 바뀌는 동작을 보여 줍니다. |
-| [show-diff](skills/show-diff/SKILL.md) | 결과물 표현 공통: 현재 기준으로 바뀌는 줄만 `+`/`-`로 표시하고 색은 `diff` 블록에 맡깁니다. 새로 생기는 텍스트 파일·설정·명세의 내용도 보여 줍니다. |
+| [show-class-shape](skills/show-class-shape/SKILL.md) | 결과물 표현: 클래스·공개 API 선언과 동작 표, 기존 API의 바뀌는 동작을 보여 줍니다. 기존 클래스가 바뀌면 클래스 블록을 diff로 씁니다. |
+| [show-diff](skills/show-diff/SKILL.md) | 결과물 표현 공통: 텍스트 하나(파일·설정·명세·목록·트리·선언)가 바뀔 때, 현재 기준으로 바뀌는 줄만 `+`/`-`로 표시하고 색은 `diff` 블록에 맡깁니다. 새로 생기는 텍스트 파일·설정·명세의 내용도 보여 줍니다. |
 | [show-code-flowchart](skills/show-code-flowchart/SKILL.md) | 코드의 실행 흐름을 그린 순서도 Canvas를 만들거나 복사·수정하거나 노드를 추가·삭제할 때 적용합니다(작업·검증 절차도와 기획서 Canvas 제외). 예시 순서도를 기준으로 노드 설명 범례, 함수 펼침·접힘, 병렬 영역, 변경 노드 광택, 메모리 피크 배지, 하단 삭제 영역과 요청한 시간/메모리 수치를 표시합니다. |
 | [workflow-package-dev-push](skills/workflow-package-dev-push/SKILL.md) | PackageDev와 자체 패키지의 의존 버전, 변경 이력, 커밋·푸시 및 지정 프로젝트 적용을 처리합니다. |
 | [show-text-tree](skills/show-text-tree/SKILL.md) | 결과물 표현: Unity 오브젝트·컴포넌트, 폴더·파일 및 일반 계층 정보를 텍스트 트리로 보여 줍니다. |
@@ -96,19 +96,19 @@ Copy-Item -LiteralPath './config/AGENTS.md' -Destination $instructionsPath -Forc
 
 다음과 같이 요청하거나 `$스킬이름`을 명시합니다. 스킬 선택은 사용 중인 에이전트의 기능에 따릅니다.
 
-| 요청 예시 | 스킬 |
-| --- | --- |
-| “이번 작업계획을 저장해줘” / “정한 대로 작업계획에 반영해줘” / “작업계획대로 진행해” / “전체 계획에 완료 반영해줘” | `workflow-planning-execute` |
-| “구현 전에 계획 세워봐” / “어떻게 바꿀지 보여줘” | `show-result` + 계획 설명 (`config/AGENTS.md` 지정) |
-| “결과물 보여줘” / “이거 하면 뭐가 생기는지 보여줘” / “작업 결과 보여줘” | `show-result` |
-| “API 형태 보여줘” / “어떤 메서드가 생기는지 보여줘” | `show-class-shape` |
-| “어떻게 바뀌는지 보여줘” / “변경 전후 비교해줘” / “설정 파일 형태 보여줘” | `show-diff` |
-| “이 함수 순서도를 저장해줘” / “멀티 순서도를 Canvas로 저장해줘” / “기존 Canvas를 복사해서 수정해줘” | `show-code-flowchart` |
-| “측정 포함 순서도를 저장해줘” / “이전 측정값으로 순서도를 저장해줘” | `show-code-flowchart` |
-| “Foundation 커밋·푸시하고 지정 프로젝트에 적용해줘” | `workflow-package-dev-push` |
-| “플레이어 하이어라키를 텍스트 트리로 보여줘” / “폴더 구조 보여줘” | `show-text-tree` |
-| “이 C# 코드를 프로젝트 스타일에 맞춰 작성해줘” | `csharp-project-style` |
-| “뷰 만들어줘” / “모델 만들어줘” / “뷰 모델 러너 구조로 만들어줘” / “뷰 모델 바인더 구조로 만들어줘” | `view-model-composition` |
+| 요청 예시                                                                  | 스킬                                            |
+| ---------------------------------------------------------------------- | --------------------------------------------- |
+| “이번 작업계획을 저장해줘” / “정한 대로 작업계획에 반영해줘” / “작업계획대로 진행해” / “전체 계획에 완료 반영해줘” | `workflow-planning-execute`                   |
+| “구현 전에 계획 세워봐” / “어떻게 바꿀지 보여줘”                                         | `show-result` + 계획 설명 (`config/AGENTS.md` 지정) |
+| “결과물 보여줘” / “이거 하면 뭐가 생기는지 보여줘” / “작업 결과 보여줘”                          | `show-result`                                 |
+| “API 형태 보여줘” / “어떤 메서드가 생기는지 보여줘”                                      | `show-class-shape`                            |
+| “이 파일 어떻게 바뀌는지 보여줘” / “변경 전후 비교해줘” / “설정 파일 형태 보여줘”                    | `show-diff`                                   |
+| “이 함수 순서도를 저장해줘” / “멀티 순서도를 Canvas로 저장해줘” / “기존 Canvas를 복사해서 수정해줘”     | `show-code-flowchart`                         |
+| “측정 포함 순서도를 저장해줘” / “이전 측정값으로 순서도를 저장해줘”                               | `show-code-flowchart`                         |
+| “Foundation 커밋·푸시하고 지정 프로젝트에 적용해줘”                                     | `workflow-package-dev-push`                   |
+| “플레이어 하이어라키를 텍스트 트리로 보여줘” / “폴더 구조 보여줘”                                | `show-text-tree`                              |
+| “이 C# 코드를 프로젝트 스타일에 맞춰 작성해줘”                                           | `csharp-project-style`                        |
+| “뷰 만들어줘” / “모델 만들어줘” / “뷰 모델 러너 구조로 만들어줘” / “뷰 모델 바인더 구조로 만들어줘”        | `view-model-composition`                      |
 
 텍스트 트리를 명시하면 클래스 구조도 `show-text-tree`로 표현합니다. Unity 오브젝트는 `Player [Transform, PlayerActor]`처럼 이름과 컴포넌트를 한 줄에 표시합니다. 배포 방법에 대한 질문이나 계획 요청만으로 커밋·푸시하지 않습니다.
 
