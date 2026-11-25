@@ -9,7 +9,7 @@ description: 정보를 들여쓰기와 가지선으로 된 텍스트 트리로 �
 
 ## 예시
 
-폴더와 파일:
+폴더와 파일 (자식이 하나여도 `Settings/Input/PlayerControls.inputactions`처럼 합치지 않고 한 단계씩 펼친다):
 
 ```text
 Project/
@@ -18,6 +18,9 @@ Project/
 │  └─ PlayerMovement.cs
 ├─ Editor/
 │  └─ PlayerActorEditor.cs
+├─ Settings/
+│  └─ Input/
+│     └─ PlayerControls.inputactions
 ├─ Shared/ → Packages/Shared/ 참조
 └─ … (Tests/, Samples/ 생략)
 ```

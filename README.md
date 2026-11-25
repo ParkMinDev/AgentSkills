@@ -123,6 +123,7 @@ Copy-Item -LiteralPath './config/AGENTS.md' -Destination $instructionsPath -Forc
 - 예시는 해당 스킬의 `references/`에 둡니다.
 - 쓰지 않는 스킬은 지우지 않고 `skills-archive/<스킬 이름>/`으로 옮겨 보관합니다. 플러그인과 Codex 설치 명령은 `skills/`만 읽으므로 보관한 스킬은 불러오지 않으며, 다시 쓰려면 `skills/`로 되돌립니다. 이미 Codex에 설치된 사본은 따로 지웁니다.
 - 스킬을 바꿔 커밋할 때는 `.claude-plugin/plugin.json`의 `version`도 올립니다. Claude Code는 설치할 때 받은 사본(`~/.claude/plugins/cache/`)을 쓰며, 버전이 같으면 업데이트에서 새로 받지 않습니다.
+- Claude 전용 파일은 `.claude-plugin/`(매니페스트, 플러그인 아이콘 `agent-skills-icon.png`)에, Codex 전용 파일은 각 스킬의 `agents/`(`openai.yaml`, `icon.png`)에 둡니다. Codex는 스킬 폴더 단위로 설치되므로 스킬마다 `agents/`가 있어야 합니다. `openai.yaml`의 `display_name`만 영어(스킬 이름을 단어별 대문자로)로 쓰고, 짧은 설명과 기본 프롬프트는 한국어로 씁니다.
 - 수정은 저장소 원본에서 하고 설치본에도 반영합니다.
 - 비밀키·인증 토큰·개인 실행 로그는 커밋하지 않습니다.
 - 다른 출처의 스킬은 라이선스와 배포 조건을 확인한 뒤 별도로 추가합니다.

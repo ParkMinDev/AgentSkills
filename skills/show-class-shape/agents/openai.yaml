@@ -1,0 +1,9 @@
+interface:
+  display_name: "Show Class Shape"
+  short_description: "클래스와 공개 API의 모양을 보여 줍니다"
+  icon_small: "./agents/icon.png"
+  icon_large: "./agents/icon.png"
+  brand_color: "#0A6CFF"
+  default_prompt: "$show-class-shape 스킬로 이 클래스에 어떤 메서드가 생기는지 보여줘."
+policy:
+  allow_implicit_invocation: true

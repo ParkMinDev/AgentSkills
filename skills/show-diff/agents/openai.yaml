@@ -1,0 +1,9 @@
+interface:
+  display_name: "Show Diff"
+  short_description: "텍스트가 어떻게 바뀌는지 diff로 보여 줍니다"
+  icon_small: "./agents/icon.png"
+  icon_large: "./agents/icon.png"
+  brand_color: "#0A6CFF"
+  default_prompt: "$show-diff 스킬로 이 파일이 어떻게 바뀌는지 보여줘."
+policy:
+  allow_implicit_invocation: true

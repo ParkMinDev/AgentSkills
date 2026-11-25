@@ -1,0 +1,9 @@
+interface:
+  display_name: "Show Code Flowchart"
+  short_description: "코드 실행 흐름을 Canvas 순서도로 그립니다"
+  icon_small: "./agents/icon.png"
+  icon_large: "./agents/icon.png"
+  brand_color: "#0A6CFF"
+  default_prompt: "$show-code-flowchart 스킬로 이 함수 순서도를 저장해줘."
+policy:
+  allow_implicit_invocation: true

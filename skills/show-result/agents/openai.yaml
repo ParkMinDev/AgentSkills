@@ -1,0 +1,9 @@
+interface:
+  display_name: "Show Result"
+  short_description: "작업으로 생기거나 바뀌는 결과물을 보여 줍니다"
+  icon_small: "./agents/icon.png"
+  icon_large: "./agents/icon.png"
+  brand_color: "#0A6CFF"
+  default_prompt: "$show-result 스킬로 이 작업을 하면 뭐가 생기는지 보여줘."
+policy:
+  allow_implicit_invocation: true

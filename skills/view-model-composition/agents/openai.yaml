@@ -1,0 +1,9 @@
+interface:
+  display_name: "View Model Composition"
+  short_description: "뷰·모델·러너·바인더 구조를 만듭니다"
+  icon_small: "./agents/icon.png"
+  icon_large: "./agents/icon.png"
+  brand_color: "#0A6CFF"
+  default_prompt: "$view-model-composition 스킬로 뷰 모델 구조를 만들어줘."
+policy:
+  allow_implicit_invocation: true
