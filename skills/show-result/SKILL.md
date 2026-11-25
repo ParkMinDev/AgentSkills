@@ -19,7 +19,7 @@ description: 작업으로 생기거나 바뀌는 결과물 전체(클래스·공
 
 ```text
 ### • 클래스 형태
-(show-class-shape: SaveStore 블록 + 동작 표. 기존 클래스가 바뀌므로 diff로 표시)
+(show-class-shape: 기존 SaveStore의 공개 선언 변경)
 
 ### • 폴더 구조
 (show-text-tree: slot-1/ 아래 backups/ 추가. 현재 구조가 바뀌므로 diff로 표시)

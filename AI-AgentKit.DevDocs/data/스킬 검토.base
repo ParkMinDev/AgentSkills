@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.inFolder("AI-AgentKit.DevDocs/analysis/Data/스킬 검토 항목")
+    - file.inFolder("AI-AgentKit.DevDocs/data/스킬 검토.항목")
     - file.ext == "md"
 properties:
   note.skill:

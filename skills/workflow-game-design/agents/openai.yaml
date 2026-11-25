@@ -1,0 +1,9 @@
+interface:
+  display_name: "Workflow Game Design"
+  short_description: "게임별 대표 기획서에 규칙·표·시안·플레이 흐름을 반영합니다"
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
+  brand_color: "#0A6CFF"
+  default_prompt: "$workflow-game-design 스킬로 이 게임의 대표 기획서에 변경 사항을 반영해줘."
+policy:
+  allow_implicit_invocation: true

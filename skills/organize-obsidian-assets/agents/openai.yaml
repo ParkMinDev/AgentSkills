@@ -1,0 +1,9 @@
+interface:
+  display_name: "Organize Obsidian Assets"
+  short_description: "Obsidian 문서 전용 자료를 모으고 참조 경로를 정리합니다"
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
+  brand_color: "#0A6CFF"
+  default_prompt: "$organize-obsidian-assets 스킬로 이 캔버스의 전용 자료를 정리해줘."
+policy:
+  allow_implicit_invocation: true

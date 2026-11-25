@@ -1,0 +1,16 @@
+filters:
+  and:
+    - 'file.inFolder("카페 기획서.Data/레시피 표.Data")'
+    - 'file.ext == "md"'
+properties:
+  file.name:
+    displayName: 메뉴
+  가격:
+    displayName: 가격(원)
+views:
+  - type: table
+    name: 레시피
+    order:
+      - file.name
+      - 재료순서
+      - 가격

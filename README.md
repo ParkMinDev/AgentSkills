@@ -24,7 +24,7 @@ claude plugin install turn-meter@ai-agentkit
 claude plugin install change-report@ai-agentkit
 ```
 
-플러그인은 저장소 폴더를 직접 읽으므로 `git pull` 후 새 세션부터 반영됩니다. 공통 지침은 `~/.claude/CLAUDE.md`에 아래 한 줄을 두어 불러옵니다(경로는 PC에 맞게 수정).
+기존 설치를 갱신할 때는 저장소에서 `git pull --ff-only` 후 `claude plugin update agent-skills@ai-agentkit --scope user`를 실행하고 Claude Code를 재시작합니다. 버전 0.4.0부터 게임 기획서 스킬은 `workflow-game-design`으로 제공됩니다. 공통 지침은 `~/.claude/CLAUDE.md`에 아래 한 줄을 두어 불러옵니다(경로는 PC에 맞게 수정).
 
 ```
 @D:/WorkSpace/ParkMinDev/Solutions/AI-AgentKit/config/AGENTS.md
@@ -34,12 +34,13 @@ claude plugin install change-report@ai-agentkit
 
 | 스킬                                                                     | 용도                                                                                                                                                                                                                                                                                                                 |
 | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [workflow-game-design](skills/workflow-game-design/SKILL.md) | 게임별 대표 Obsidian Canvas 기획서에 규칙·데이터 표·플레이 흐름·시안을 함께 관리합니다. 게임마다 기존 대표 기획서를 갱신하며, 배치의 시각 확인은 요청 시에만 진행합니다. 새 기획서의 기본 경로는 `<프로젝트명>.DevDocs/기획/<게임명> 기획서.canvas`입니다. 캡슐·마름모 표시는 Advanced Canvas를 사용합니다. |
 | [workflow-planning-execute](skills/workflow-planning-execute/SKILL.md) | 워크플로우: 계획 파일을 만들고 고치고(저장·문서·“작업계획에 반영”), 그 파일대로 실행하고, 완료되면 전체 계획에 기록하고 작업 파일을 `planning/완료/`로 옮깁니다. 전체 계획은 ✍️ 사용자 메모 · 📋 계획(진행 중·남은 계획) · ✅ 검증(남은 검증) · 🏁 완료(계획·검증) · 📌 고정 방침 · 🤖 에이전트 참고 영역, 작업계획은 ✍️ 사용자 메모 · 📦 결과물(`show-result`) · 📝 계획 요약 · 🔢 작업 순서 · ✅ 검증 · 🤖 에이전트용 계획으로 쓰고, 계획이 바뀌면 최신 계획으로 다시 씁니다. |
 | [show-result](skills/show-result/SKILL.md)                             | 결과물 표현 조합: 작업으로 생기거나 바뀌는 결과물 전체를 클래스 → 폴더 → 파일 순서로, 알맞은 표현 스킬을 골라 보여 줍니다.                                                                                                                                                                                                                                          |
-| [show-class-shape](skills/show-class-shape/SKILL.md)                   | 결과물 표현: 클래스·공개 API 선언과 동작 표, 기존 API의 바뀌는 동작을 보여 줍니다. 기존 클래스가 바뀌면 클래스 블록을 diff로 씁니다.                                                                                                                                                                                                                                |
+| [show-class-shape](skills/show-class-shape/SKILL.md)                   | 결과물 표현: 클래스·인터페이스·공개 API의 선언을 보여 줍니다.                                                                                                                                                                                                                                |
 | [show-diff](skills/show-diff/SKILL.md)                                 | 결과물 표현 공통: 텍스트 하나(파일·설정·명세·목록·트리·선언)가 바뀔 때, 현재 기준으로 바뀌는 줄만 `+`/`-`로 표시하고(수정은 `+ 이전 → 새 (수정)`) 색은 `diff` 블록에 맡기며, 아래에 완성본을 함께 보여 줍니다. 새로 생기는 텍스트 파일·설정·명세의 내용도 보여 줍니다.                                                                                                                                              |
 | [show-code-flowchart](skills/show-code-flowchart/SKILL.md)             | 코드의 실행 흐름을 그린 순서도 Canvas를 만들거나 복사·수정하거나 노드를 추가·삭제할 때 적용합니다(작업·검증 절차도와 기획서 Canvas 제외). 예시 순서도를 기준으로 노드 설명 범례, 함수 펼침·접힘, 병렬 영역, 변경 노드 광택, 메모리 피크 배지, 하단 삭제 영역과 요청한 시간/메모리 수치를 표시합니다.                                                                                                                                 |
-| [show-game-flowchart](skills/show-game-flowchart/SKILL.md)             | 결과물 표현: 게임 기획의 플레이 흐름·장면 전환·조작 분기를 Obsidian Canvas 기획서로 만들거나 고치고, 화면 시안과 구현 스크린샷을 장면에 배치합니다. 캡슐·마름모 노드에 Obsidian Advanced Canvas 플러그인이 필요합니다. 기본 위치는 `<프로젝트명>.DevDocs/game-flowchart/`입니다.                                                                                                                         |
+| [organize-obsidian-assets](skills/organize-obsidian-assets/SKILL.md) | Obsidian 문서 전용 자료를 문서 옆의 .Data 폴더에 배치하고 이동한 참조를 갱신합니다. |
 | [workflow-package-dev-push](skills/workflow-package-dev-push/SKILL.md) | PackageDev와 자체 패키지의 의존 버전, 변경 이력, 커밋·푸시 및 지정 프로젝트 적용을 처리합니다.                                                                                                                                                                                                                                                       |
 | [show-text-tree](skills/show-text-tree/SKILL.md)                       | 결과물 표현: Unity 오브젝트·컴포넌트, 폴더·파일 및 일반 계층 정보를 텍스트 트리로 보여 줍니다.                                                                                                                                                                                                                                                         |
 | [csharp-project-style](skills/csharp-project-style/SKILL.md)           | Unity 및 일반 C# 코드의 선언·멤버 순서·비동기·직렬화 필드 스타일을 적용합니다.                                                                                                                                                                                                                                                                  |
@@ -66,7 +67,7 @@ Get-ChildItem -LiteralPath './skills' -Directory | ForEach-Object {
 
 갱신할 때는 저장소에서 `git pull --ff-only` 후 같은 복사 명령을 실행합니다. 설치본을 직접 수정했다면 먼저 저장소에 반영하거나 백업하세요. 복사는 기존 파일을 덮어쓰지만 저장소에서 삭제된 파일까지 제거하지는 않으므로 삭제된 항목은 별도로 확인합니다.
 
-위 명령은 이 저장소에 포함된 스킬만 설치·갱신하며, 개인 폴더의 다른 스킬은 유지합니다.
+이전 버전에서 옮길 때는 새 `workflow-game-design` 설치 후 스킬 폴더에서 기존 `show-game-flowchart` 사본을 제거합니다.
 
 ## Codex 공통 작업 지침 설치 및 갱신
 
@@ -106,7 +107,8 @@ Copy-Item -LiteralPath './config/AGENTS.md' -Destination $instructionsPath -Forc
 | “이 파일 어떻게 바뀌는지 보여줘” / “변경 전후 비교해줘” / “설정 파일 형태 보여줘”                    | `show-diff`                                   |
 | “이 함수 순서도를 저장해줘” / “멀티 순서도를 Canvas로 저장해줘” / “기존 Canvas를 복사해서 수정해줘”     | `show-code-flowchart`                         |
 | “측정 포함 순서도를 저장해줘” / “이전 측정값으로 순서도를 저장해줘”                               | `show-code-flowchart`                         |
-| “게임 흐름 기획서 만들어줘” / “장면 전환 흐름을 캔버스로 그려줘”                               | `show-game-flowchart`                         |
+| “기획서에 시안 추가” / “이 표의 원본 자료 정리해줘” (Obsidian 보관소) | `organize-obsidian-assets` |
+| “게임 기획서 만들어줘” / “기획서에 레시피와 보상 규칙 반영해줘” / “장면 전환 흐름을 그려줘” | `workflow-game-design` |
 | “Foundation 커밋·푸시하고 지정 프로젝트에 적용해줘”                                     | `workflow-package-dev-push`                   |
 | “플레이어 하이어라키를 텍스트 트리로 보여줘” / “폴더 구조 보여줘”                                | `show-text-tree`                              |
 | “이 C# 코드를 프로젝트 스타일에 맞춰 작성해줘”                                           | `csharp-project-style`                        |
@@ -120,7 +122,7 @@ Copy-Item -LiteralPath './config/AGENTS.md' -Destination $instructionsPath -Forc
 
 - 각 스킬은 `skills/<스킬 이름>/SKILL.md`에 정의합니다.
 - 스킬은 다른 스킬의 SKILL.md를 링크로 읽어 부품처럼 조합합니다. 링크는 위에서 아래로만 둡니다(`workflow-planning-execute` → `show-result` → 결과물 표현 스킬 `show-class-shape`·`show-text-tree` → 공통 `show-diff`. 파일 형태는 `show-diff`가 직접 맡음). 결과물 표현 스킬은 달라지는 모양을 보여 줄 때 `show-diff`만 가리키고, `show-diff`는 다른 스킬을 가리키지 않습니다. 새 `show-` 스킬을 추가해도 `show-diff`는 고치지 않습니다. 같은 원칙은 한 스킬에만 두고 나머지는 링크합니다.
-- 예시는 해당 스킬의 `references/`에 둡니다.
+- 참고 문서는 해당 스킬의 `references/`에, 복사해서 사용하는 예시 캔버스와 첨부 자료는 `assets/`에 둡니다.
 - 쓰지 않는 스킬은 지우지 않고 `skills-archive/<스킬 이름>/`으로 옮겨 보관합니다. 플러그인과 Codex 설치 명령은 `skills/`만 읽으므로 보관한 스킬은 불러오지 않으며, 다시 쓰려면 `skills/`로 되돌립니다. 이미 Codex에 설치된 사본은 따로 지웁니다.
 - 스킬을 바꿔 커밋할 때는 `.claude-plugin/plugin.json`의 `version`도 올립니다. Claude Code는 설치할 때 받은 사본(`~/.claude/plugins/cache/`)을 쓰며, 버전이 같으면 업데이트에서 새로 받지 않습니다.
 - Claude 전용 파일은 `.claude-plugin/`(매니페스트, 플러그인 아이콘 `agent-skills-icon.png`)에, Codex 전용 파일은 각 스킬의 `agents/`(`openai.yaml`, `icon.png`)에 둡니다. Codex는 스킬 폴더 단위로 설치되므로 스킬마다 `agents/`가 있어야 합니다. `openai.yaml`의 `display_name`만 영어(스킬 이름을 단어별 대문자로)로 쓰고, 짧은 설명과 기본 프롬프트는 한국어로 씁니다.
