@@ -1,5 +1,5 @@
 ---
-name: package-dev-release
+name: workflow-package-dev-push
 description: PackageDev와 자체 패키지 서브모듈의 변경을 배포한다. 의존 버전과 연쇄 영향 범위를 정리하고 CHANGELOG 작성, 커밋·푸시, 명시된 대상 프로젝트의 매니페스트 갱신 요청에 사용한다. 배포 방법에 대한 질문이나 계획 요청만으로 변경·푸시하지 않는다.
 ---
 

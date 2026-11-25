@@ -12,4 +12,5 @@ Desktop.ini
 __pycache__/
 *.py[cod]
 /Ignore/
+/.obsidian/
 **/.claude-plugin/types/

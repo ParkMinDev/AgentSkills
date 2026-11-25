@@ -8,8 +8,9 @@
 | --- | --- |
 | `config/AGENTS.md` | Codex·Claude Code 공통 작업 지침 원본 |
 | `skills/` | 공용 스킬 (Codex는 복사 설치, Claude Code는 `agent-skills` 플러그인) |
-| `plugins/turn-meter/` | Claude Code 모드: 응답 밑에 턴별 토큰 사용량 표시 |
-| `plugins/change-report/` | Claude Code 모드: 응답 밑에 이번 턴의 추가·수정·삭제 파일 목록 표시 |
+| `plugins/claude/turn-meter/` | Claude Code 모드: 응답 밑에 턴별 토큰 사용량 표시 |
+| `plugins/claude/change-report/` | Claude Code 모드: 응답 밑에 이번 턴의 추가·수정·삭제 파일 목록 표시 |
+| `plugins/codex/turn-meter/` | Codex용 Windows 턴미터: 별도 창에 턴별 토큰과 캐시 적중률 표시 |
 | `.claude-plugin/` | Claude Code 로컬 마켓플레이스 `ai-agentkit` (`agent-skills`, `turn-meter`, `change-report`) |
 
 ## Claude Code 설치 및 갱신
@@ -33,23 +34,25 @@ claude plugin install change-report@ai-agentkit
 
 | 스킬 | 용도 |
 | --- | --- |
-| [qa-workbook](skills/qa-workbook/SKILL.md) | 엑셀 검증대장과 사진 증거 링크를 갱신하고 남은 검증 항목을 관리합니다. |
-| [project-work-planning](skills/project-work-planning/SKILL.md) | Markdown 계획의 완료 기록과 작업 파일 수명을 관리하고 Base 표와 Canvas 순서도를 연결합니다. 저장 요청에 적용합니다. |
-| [explain-code-changes](skills/explain-code-changes/SKILL.md) | 코드 추가·수정·삭제 설명을 실제 파일·함수에 연결하고, 작업 종류에 따라 알고리즘·선언·관계로 표현합니다. |
-| [obsidian-canvas-flowchart](skills/obsidian-canvas-flowchart/SKILL.md) | 코드의 실행 흐름을 그린 순서도 Canvas를 만들거나 복사·수정하거나 노드를 추가·삭제할 때 적용합니다(작업·검증 절차도와 기획서 Canvas 제외). 예시 순서도를 기준으로 노드 설명 범례, 함수 펼침·접힘, 병렬 영역, 변경 노드 광택, 메모리 피크 배지, 하단 삭제 영역과 요청한 시간/메모리 수치를 표시합니다. |
-| [package-dev-release](skills/package-dev-release/SKILL.md) | PackageDev와 자체 패키지의 의존 버전, 변경 이력, 커밋·푸시 및 지정 프로젝트 적용을 처리합니다. |
-| [class-diagram](skills/class-diagram/SKILL.md) | 실제 코드나 합의된 설계의 클래스·인터페이스 관계를 Mermaid 클래스 다이어그램으로 설명합니다. |
-| [text-tree](skills/text-tree/SKILL.md) | Unity 오브젝트·컴포넌트, 폴더·파일 및 일반 계층 정보를 텍스트 트리로 설명합니다. |
+| [workflow-planning-execute](skills/workflow-planning-execute/SKILL.md) | 워크플로우: 계획 파일을 만들고 고치고(저장·문서·“작업계획에 반영”), 그 파일대로 실행하고, 완료되면 전체 계획에 기록하고 작업 파일을 `planning/완료/`로 옮깁니다. 전체 계획은 ✍️ 사용자 메모 · 📋 계획(진행 중·남은 계획·완료 기록) · 📌 고정 방침 · 🤖 에이전트 참고 영역, 작업계획은 ✍️ 사용자 메모 · 📦 결과물(`show-result`) · 📝 계획 요약 · 🔢 작업 순서 · ✅ 검증 · 🤖 에이전트용 계획으로 쓰고, 계획이 바뀌면 최신 계획으로 다시 씁니다. |
+| [show-result](skills/show-result/SKILL.md) | 결과물 표현 조합: 작업으로 생기거나 바뀌는 결과물 전체를 클래스 → 폴더 → 파일 순서로, 알맞은 표현 스킬을 골라 보여 줍니다. |
+| [show-class-shape](skills/show-class-shape/SKILL.md) | 결과물 표현: 클래스·공개 API 선언과 동작 표, 기존 API의 바뀌는 동작을 보여 줍니다. |
+| [show-diff](skills/show-diff/SKILL.md) | 결과물 표현 공통: 현재 기준으로 바뀌는 줄만 `+`/`-`로 표시하고 색은 `diff` 블록에 맡깁니다. 새로 생기는 텍스트 파일·설정·명세의 내용도 보여 줍니다. |
+| [show-code-flowchart](skills/show-code-flowchart/SKILL.md) | 코드의 실행 흐름을 그린 순서도 Canvas를 만들거나 복사·수정하거나 노드를 추가·삭제할 때 적용합니다(작업·검증 절차도와 기획서 Canvas 제외). 예시 순서도를 기준으로 노드 설명 범례, 함수 펼침·접힘, 병렬 영역, 변경 노드 광택, 메모리 피크 배지, 하단 삭제 영역과 요청한 시간/메모리 수치를 표시합니다. |
+| [workflow-package-dev-push](skills/workflow-package-dev-push/SKILL.md) | PackageDev와 자체 패키지의 의존 버전, 변경 이력, 커밋·푸시 및 지정 프로젝트 적용을 처리합니다. |
+| [show-text-tree](skills/show-text-tree/SKILL.md) | 결과물 표현: Unity 오브젝트·컴포넌트, 폴더·파일 및 일반 계층 정보를 텍스트 트리로 보여 줍니다. |
 | [csharp-project-style](skills/csharp-project-style/SKILL.md) | Unity 및 일반 C# 코드의 선언·멤버 순서·비동기·직렬화 필드 스타일을 적용합니다. |
 | [view-model-composition](skills/view-model-composition/SKILL.md) | 뷰·모델·러너·바인더를 요청한 조합으로 구성하고, 책임·수명 및 uGUI 계층을 정리합니다. |
 
 ## Codex 설치 및 갱신
 
+Windows에서 턴별 토큰 사용량을 보려면 [Codex 턴미터 실행 안내](plugins/codex/turn-meter/README.md)를 참고하세요.
+
 `csharp-project-style`은 Unity와 일반 C# 코드의 작성 스타일을 관리합니다. 정적 멤버는 최상단에 모으고, Unity 컴포넌트 필드는 Odin이 있으면 `Title`, 없으면 `Header`를 사용합니다.
 
 이 저장소를 복제한 뒤 저장소 루트에서 PowerShell로 실행합니다.
 
-Canvas의 이번 변경은 노드 자기 색의 광택으로, 메모리 피크는 개별 노드 오른쪽 위 빨간 배지로 구분하며 노드 글꼴만 1.7배로 키웁니다. 표시 방식은 [예시 순서도](skills/obsidian-canvas-flowchart/assets/예시%20순서도.canvas)에 모두 담겨 있습니다. 재사용할 스타일은 [canvas-node-emphasis.css](skills/obsidian-canvas-flowchart/assets/canvas-node-emphasis.css)에 있으며, 허용된 보관소에 별도로 설치·활성화합니다. 스킬 복사만으로 Obsidian 설정이 변경되지는 않습니다.
+Canvas의 이번 변경은 노드 자기 색의 광택으로, 메모리 피크는 개별 노드 오른쪽 위 빨간 배지로 구분하며 노드 글꼴만 1.7배로 키웁니다. 표시 방식은 [예시 순서도](skills/show-code-flowchart/assets/예시%20순서도.canvas)에 모두 담겨 있습니다. 재사용할 스타일은 [canvas-node-emphasis.css](skills/show-code-flowchart/assets/canvas-node-emphasis.css)에 있으며, 허용된 보관소에 별도로 설치·활성화합니다. 스킬 복사만으로 Obsidian 설정이 변경되지는 않습니다.
 
 ```powershell
 $skillRoot = if ($env:CODEX_HOME) { Join-Path $env:CODEX_HOME 'skills' } else { Join-Path $env:USERPROFILE '.codex/skills' }
@@ -95,25 +98,28 @@ Copy-Item -LiteralPath './config/AGENTS.md' -Destination $instructionsPath -Forc
 
 | 요청 예시 | 스킬 |
 | --- | --- |
-| “검증대장에 결과 반영해줘” / “남은 검증 알려줘” | `qa-workbook` |
-| “이번 작업계획을 저장해줘” / “전체 계획에 완료 상태를 저장해줘” | `project-work-planning` |
-| “작업 계획 설명해줘” / “정리할 코드 찾아봐” / “왜 바꾸는지 쉽게 설명해줘” | `explain-code-changes` |
-| “이 함수 순서도를 저장해줘” / “멀티 순서도를 Canvas로 저장해줘” / “기존 Canvas를 복사해서 수정해줘” | `obsidian-canvas-flowchart` |
-| “측정 포함 순서도를 저장해줘” / “이전 측정값으로 순서도를 저장해줘” | `obsidian-canvas-flowchart` |
-| “Foundation 커밋·푸시하고 지정 프로젝트에 적용해줘” | `package-dev-release` |
-| “이 클래스들의 관계를 구조도로 보여줘” | `class-diagram` |
-| “플레이어 하이어라키를 텍스트 트리로 보여줘” / “폴더 구조 보여줘” | `text-tree` |
+| “이번 작업계획을 저장해줘” / “정한 대로 작업계획에 반영해줘” / “작업계획대로 진행해” / “전체 계획에 완료 반영해줘” | `workflow-planning-execute` |
+| “구현 전에 계획 세워봐” / “어떻게 바꿀지 보여줘” | `show-result` + 계획 설명 (`config/AGENTS.md` 지정) |
+| “결과물 보여줘” / “이거 하면 뭐가 생기는지 보여줘” / “작업 결과 보여줘” | `show-result` |
+| “API 형태 보여줘” / “어떤 메서드가 생기는지 보여줘” | `show-class-shape` |
+| “어떻게 바뀌는지 보여줘” / “변경 전후 비교해줘” / “설정 파일 형태 보여줘” | `show-diff` |
+| “이 함수 순서도를 저장해줘” / “멀티 순서도를 Canvas로 저장해줘” / “기존 Canvas를 복사해서 수정해줘” | `show-code-flowchart` |
+| “측정 포함 순서도를 저장해줘” / “이전 측정값으로 순서도를 저장해줘” | `show-code-flowchart` |
+| “Foundation 커밋·푸시하고 지정 프로젝트에 적용해줘” | `workflow-package-dev-push` |
+| “플레이어 하이어라키를 텍스트 트리로 보여줘” / “폴더 구조 보여줘” | `show-text-tree` |
 | “이 C# 코드를 프로젝트 스타일에 맞춰 작성해줘” | `csharp-project-style` |
 | “뷰 만들어줘” / “모델 만들어줘” / “뷰 모델 러너 구조로 만들어줘” / “뷰 모델 바인더 구조로 만들어줘” | `view-model-composition` |
 
-텍스트 트리를 명시하면 클래스 구조도 `text-tree`를 우선합니다. Unity 오브젝트는 `Player [Transform, PlayerActor]`처럼 이름과 컴포넌트를 한 줄에 표시합니다. 배포 방법에 대한 질문이나 계획 요청만으로 커밋·푸시하지 않습니다.
+텍스트 트리를 명시하면 클래스 구조도 `show-text-tree`로 표현합니다. Unity 오브젝트는 `Player [Transform, PlayerActor]`처럼 이름과 컴포넌트를 한 줄에 표시합니다. 배포 방법에 대한 질문이나 계획 요청만으로 커밋·푸시하지 않습니다.
 
 개인 `AGENTS.md`에서 스킬 사용을 지정하려면 설치 위치를 기준으로 `skills/<스킬 이름>/SKILL.md`를 연결합니다. 공통 작업 지침은 `config/AGENTS.md`에서 관리합니다.
 
 ## 관리 원칙
 
 - 각 스킬은 `skills/<스킬 이름>/SKILL.md`에 정의합니다.
+- 스킬은 다른 스킬의 SKILL.md를 링크로 읽어 부품처럼 조합합니다. 링크는 위에서 아래로만 둡니다(`workflow-planning-execute` → `show-result` → 결과물 표현 스킬 `show-class-shape`·`show-text-tree` → 공통 `show-diff`. 파일 형태는 `show-diff`가 직접 맡음). 결과물 표현 스킬은 달라지는 모양을 보여 줄 때 `show-diff`만 가리키고, `show-diff`는 다른 스킬을 가리키지 않습니다. 새 `show-` 스킬을 추가해도 `show-diff`는 고치지 않습니다. 같은 원칙은 한 스킬에만 두고 나머지는 링크합니다.
 - 예시는 해당 스킬의 `references/`에 둡니다.
+- 쓰지 않는 스킬은 지우지 않고 `skills-archive/<스킬 이름>/`으로 옮겨 보관합니다. 플러그인과 Codex 설치 명령은 `skills/`만 읽으므로 보관한 스킬은 불러오지 않으며, 다시 쓰려면 `skills/`로 되돌립니다. 이미 Codex에 설치된 사본은 따로 지웁니다.
 - 수정은 저장소 원본에서 하고 설치본에도 반영합니다.
 - 비밀키·인증 토큰·개인 실행 로그는 커밋하지 않습니다.
 - 다른 출처의 스킬은 라이선스와 배포 조건을 확인한 뒤 별도로 추가합니다.

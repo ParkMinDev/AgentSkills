@@ -1,0 +1,32 @@
+filters:
+  and:
+    - file.inFolder("AI-AgentKit.DevDocs/analysis/Data/스킬 검토 항목")
+    - file.ext == "md"
+properties:
+  note.skill:
+    displayName: 스킬
+  note.trigger:
+    displayName: 발동 조건
+  note.body:
+    displayName: 본문
+  note.refsChecked:
+    displayName: 참조 확인
+  note.refs:
+    displayName: 참조 파일
+  note.uses:
+    displayName: 참조 스킬
+views:
+  - type: table
+    name: 체크리스트
+    order:
+      - skill
+      - trigger
+      - body
+      - refsChecked
+      - uses
+      - refs
+    sort:
+      - property: order
+        direction: ASC
+    columnSize:
+      note.uses: 520
