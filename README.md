@@ -122,6 +122,7 @@ Copy-Item -LiteralPath './config/AGENTS.md' -Destination $instructionsPath -Forc
 - 스킬은 다른 스킬의 SKILL.md를 링크로 읽어 부품처럼 조합합니다. 링크는 위에서 아래로만 둡니다(`workflow-planning-execute` → `show-result` → 결과물 표현 스킬 `show-class-shape`·`show-text-tree` → 공통 `show-diff`. 파일 형태는 `show-diff`가 직접 맡음). 결과물 표현 스킬은 달라지는 모양을 보여 줄 때 `show-diff`만 가리키고, `show-diff`는 다른 스킬을 가리키지 않습니다. 새 `show-` 스킬을 추가해도 `show-diff`는 고치지 않습니다. 같은 원칙은 한 스킬에만 두고 나머지는 링크합니다.
 - 예시는 해당 스킬의 `references/`에 둡니다.
 - 쓰지 않는 스킬은 지우지 않고 `skills-archive/<스킬 이름>/`으로 옮겨 보관합니다. 플러그인과 Codex 설치 명령은 `skills/`만 읽으므로 보관한 스킬은 불러오지 않으며, 다시 쓰려면 `skills/`로 되돌립니다. 이미 Codex에 설치된 사본은 따로 지웁니다.
+- 스킬을 바꿔 커밋할 때는 `.claude-plugin/plugin.json`의 `version`도 올립니다. Claude Code는 설치할 때 받은 사본(`~/.claude/plugins/cache/`)을 쓰며, 버전이 같으면 업데이트에서 새로 받지 않습니다.
 - 수정은 저장소 원본에서 하고 설치본에도 반영합니다.
 - 비밀키·인증 토큰·개인 실행 로그는 커밋하지 않습니다.
 - 다른 출처의 스킬은 라이선스와 배포 조건을 확인한 뒤 별도로 추가합니다.
