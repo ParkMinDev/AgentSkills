@@ -12,12 +12,12 @@
     },
     {
       "name": "turn-meter",
-      "source": "./plugins/turn-meter",
+      "source": "./plugins/claude/turn-meter",
       "description": "응답 밑에 턴별 토큰 사용량, 변동 감지 advisor 표시"
     },
     {
       "name": "change-report",
-      "source": "./plugins/change-report",
+      "source": "./plugins/claude/change-report",
       "description": "응답 밑에 이번 턴에서 추가·수정·삭제된 파일과 줄 수를 접히는 카드로 표시"
     }
   ]
