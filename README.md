@@ -39,7 +39,7 @@ claude plugin install change-report@ai-agentkit
 | [show-result](skills/show-result/SKILL.md)                             | 결과물 표현 조합: 작업으로 생기거나 바뀌는 결과물 전체를 클래스 → 폴더 → 파일 순서로, 알맞은 표현 스킬을 골라 보여 줍니다.                                                                                                                                                                                                                                          |
 | [show-class-shape](skills/show-class-shape/SKILL.md)                   | 결과물 표현: 클래스·인터페이스·공개 API의 선언을 보여 줍니다.                                                                                                                                                                                                                                |
 | [show-diff](skills/show-diff/SKILL.md)                                 | 결과물 표현 공통: 텍스트 하나(파일·설정·명세·목록·트리·선언)가 바뀔 때, 현재 기준으로 바뀌는 줄만 `+`/`-`로 표시하고(수정은 `+ 이전 → 새 (수정)`) 색은 `diff` 블록에 맡기며, 아래에 완성본을 함께 보여 줍니다. 새로 생기는 텍스트 파일·설정·명세의 내용도 보여 줍니다.                                                                                                                                              |
-| [show-code-flowchart](skills/show-code-flowchart/SKILL.md)             | 코드의 실행 흐름을 그린 순서도 Canvas를 만들거나 복사·수정하거나 노드를 추가·삭제할 때 적용합니다(작업·검증 절차도와 기획서 Canvas 제외). 예시 순서도를 기준으로 노드 설명 범례, 함수 펼침·접힘, 병렬 영역, 변경 노드 광택, 메모리 피크 배지, 하단 삭제 영역과 요청한 시간/메모리 수치를 표시합니다.                                                                                                                                 |
+| [save-code-flowchart](skills/save-code-flowchart/SKILL.md)             | 코드의 실행 흐름을 그린 순서도 Canvas를 만들거나 복사·수정하거나 노드를 추가·삭제할 때 적용합니다(작업·검증 절차도와 기획서 Canvas 제외). 예시 순서도를 기준으로 노드 설명 범례, 함수 펼침·접힘, 병렬 영역, 변경 노드 광택, 메모리 피크 배지, 하단 삭제 영역과 요청한 시간/메모리 수치를 표시합니다.                                                                                                                                 |
 | [organize-obsidian-assets](skills/organize-obsidian-assets/SKILL.md) | Obsidian 문서 전용 자료를 문서 옆의 .Data 폴더에 배치하고 이동한 참조를 갱신합니다. |
 | [workflow-package-dev-push](skills/workflow-package-dev-push/SKILL.md) | PackageDev와 자체 패키지의 의존 버전, 변경 이력, 커밋·푸시 및 지정 프로젝트 적용을 처리합니다.                                                                                                                                                                                                                                                       |
 | [show-text-tree](skills/show-text-tree/SKILL.md)                       | 결과물 표현: Unity 오브젝트·컴포넌트, 폴더·파일 및 일반 계층 정보를 텍스트 트리로 보여 줍니다.                                                                                                                                                                                                                                                         |
@@ -54,7 +54,7 @@ Windows에서 턴별 토큰 사용량을 보려면 [Codex 턴미터 실행 안�
 
 이 저장소를 복제한 뒤 저장소 루트에서 PowerShell로 실행합니다.
 
-Canvas의 이번 변경은 노드 자기 색의 광택으로, 메모리 피크는 개별 노드 오른쪽 위 빨간 배지로 구분하며 노드 글꼴만 1.7배로 키웁니다. 표시 방식은 [예시 순서도](skills/show-code-flowchart/assets/예시%20순서도.canvas)에 모두 담겨 있습니다. 재사용할 스타일은 [canvas-node-emphasis.css](skills/show-code-flowchart/assets/canvas-node-emphasis.css)에 있으며, 허용된 보관소에 별도로 설치·활성화합니다. 스킬 복사만으로 Obsidian 설정이 변경되지는 않습니다.
+Canvas의 이번 변경은 노드 자기 색의 광택으로, 메모리 피크는 개별 노드 오른쪽 위 빨간 배지로 구분하며 노드 글꼴만 1.7배로 키웁니다. 표시 방식은 [예시 순서도](skills/save-code-flowchart/assets/예시%20순서도.canvas)에 모두 담겨 있습니다. 재사용할 스타일은 [canvas-node-emphasis.css](skills/save-code-flowchart/assets/canvas-node-emphasis.css)에 있으며, 허용된 보관소에 별도로 설치·활성화합니다. 스킬 복사만으로 Obsidian 설정이 변경되지는 않습니다.
 
 ```powershell
 $skillRoot = if ($env:CODEX_HOME) { Join-Path $env:CODEX_HOME 'skills' } else { Join-Path $env:USERPROFILE '.codex/skills' }
@@ -67,7 +67,7 @@ Get-ChildItem -LiteralPath './skills' -Directory | ForEach-Object {
 
 갱신할 때는 저장소에서 `git pull --ff-only` 후 같은 복사 명령을 실행합니다. 설치본을 직접 수정했다면 먼저 저장소에 반영하거나 백업하세요. 복사는 기존 파일을 덮어쓰지만 저장소에서 삭제된 파일까지 제거하지는 않으므로 삭제된 항목은 별도로 확인합니다.
 
-이전 버전에서 옮길 때는 새 `workflow-game-design` 설치 후 스킬 폴더에서 기존 `show-game-flowchart` 사본을 제거합니다.
+이전 버전에서 옮길 때는 새 `workflow-game-design` 설치 후 스킬 폴더에서 기존 `show-game-flowchart` 사본을 제거합니다. `save-code-flowchart`를 설치한 뒤에는 기존 `show-code-flowchart` 설치본을 제거합니다.
 
 ## Codex 공통 작업 지침 설치 및 갱신
 
@@ -105,8 +105,8 @@ Copy-Item -LiteralPath './config/AGENTS.md' -Destination $instructionsPath -Forc
 | “결과물 보여줘” / “이거 하면 뭐가 생기는지 보여줘” / “작업 결과 보여줘”                          | `show-result`                                 |
 | “API 형태 보여줘” / “어떤 메서드가 생기는지 보여줘”                                      | `show-class-shape`                            |
 | “이 파일 어떻게 바뀌는지 보여줘” / “변경 전후 비교해줘” / “설정 파일 형태 보여줘”                    | `show-diff`                                   |
-| “이 함수 순서도를 저장해줘” / “멀티 순서도를 Canvas로 저장해줘” / “기존 Canvas를 복사해서 수정해줘”     | `show-code-flowchart`                         |
-| “측정 포함 순서도를 저장해줘” / “이전 측정값으로 순서도를 저장해줘”                               | `show-code-flowchart`                         |
+| “이 함수 순서도를 저장해줘” / “멀티 순서도를 Canvas로 저장해줘” / “기존 Canvas를 복사해서 수정해줘”     | `save-code-flowchart`                         |
+| “측정 포함 순서도를 저장해줘” / “이전 측정값으로 순서도를 저장해줘”                               | `save-code-flowchart`                         |
 | “기획서에 시안 추가” / “이 표의 원본 자료 정리해줘” (Obsidian 보관소) | `organize-obsidian-assets` |
 | “게임 기획서 만들어줘” / “기획서에 레시피와 보상 규칙 반영해줘” / “장면 전환 흐름을 그려줘” | `workflow-game-design` |
 | “Foundation 커밋·푸시하고 지정 프로젝트에 적용해줘”                                     | `workflow-package-dev-push`                   |
