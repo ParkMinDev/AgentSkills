@@ -16,6 +16,7 @@
 - 아래 상황에 해당하는지 작업 전에 확인하고, 해당하면 사용자에게 묻지 않고 해당 스킬을 사용한다.
 - C# 코드를 작성·수정할 때: `csharp-project-style`
 - PackageDev와 자체 패키지 서브모듈을 커밋·푸시·배포할 때: `workflow-package-dev-push`
+- LibreOffice가 여는 오피스 문서(ods·xlsx·xls·odt·docx·doc·rtf·odp·pptx·ppt·odg 등)를 읽기·만들기·고칠 때: `edit-libreoffice-document`
 - 기능 구현 전에 계획을 보여 줄 때: 결과물은 `show-result`로 먼저 보여 주고, 그 아래에 계획을 설명한다. 결정할 것은 제안과 함께, 확인받을 것은 번호 목록으로 묻는다.
 
 ## 자료 찾기·저장

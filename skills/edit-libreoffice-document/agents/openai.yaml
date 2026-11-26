@@ -1,0 +1,9 @@
+interface:
+  display_name: "Edit LibreOffice Document"
+  short_description: "LibreOffice 문서를 켜 둔 채로 UNO 연결로 읽고 고칩니다"
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
+  brand_color: "#0A6CFF"
+  default_prompt: "$edit-libreoffice-document 스킬로 이 문서를 고쳐줘."
+policy:
+  allow_implicit_invocation: true
