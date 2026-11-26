@@ -7,6 +7,7 @@
 | 경로 | 내용 |
 | --- | --- |
 | `config/AGENTS.md` | Codex·Claude Code 공통 작업 지침 원본 |
+| [hooks/](hooks/turn-complete-sound/README.md) | Codex·Claude Code의 응답 완료 알림음 훅 |
 | `skills/` | 공용 스킬 (Codex는 복사 설치, Claude Code는 `agent-skills` 플러그인) |
 | `plugins/claude/turn-meter/` | Claude Code 모드: 응답 밑에 턴별 토큰 사용량 표시 |
 | `plugins/claude/change-report/` | Claude Code 모드: 응답 밑에 이번 턴의 추가·수정·삭제 파일 목록 표시 |
